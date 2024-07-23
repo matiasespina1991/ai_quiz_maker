@@ -1,4 +1,4 @@
-name: template_app
+name: ai_quiz_maker_app
 description: "A new Flutter project."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -150,6 +150,7 @@ dependencies:
 #  firebase_remote_config: ^5.0.1
 
   intl: any
+#  firebase_vertexai: ^0.2.2+2
 dev_dependencies:
   flutter_test:
     sdk: flutter

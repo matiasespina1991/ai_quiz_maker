@@ -7,7 +7,7 @@ fi
 
 NEW_PACKAGE_NAME=$1
 
-grep -rl 'package:template_app' ./lib | while read -r file; do
+grep -rl 'package:ai-quiz-maker-app' ./lib | while read -r file; do
   sed -i '' "s/package:template_app/package:${NEW_PACKAGE_NAME}/g" "$file"
 done
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:template_app/app_settings/theme_settings.dart';
+import 'package:ai_quiz_maker_app/app_settings/theme_settings.dart';
 
 class ButtonsTheme {
   static ElevatedButtonThemeData elevatedButtonTheme(

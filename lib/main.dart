@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:template_app/providers/providers_all.dart';
-import 'package:template_app/routes/routes.dart';
+import 'package:ai_quiz_maker_app/providers/providers_all.dart';
+import 'package:ai_quiz_maker_app/routes/routes.dart';
 import 'app_settings/auth_config.dart';
 import 'globals.dart';
 import 'app_settings/app_info.dart';
@@ -16,6 +16,7 @@ import 'generated/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await initializeApp();
   logConfigurations();
   runApp(const ProviderScope(child: MyApp()));
@@ -24,7 +25,9 @@ void main() async {
 Future<void> initializeApp() async {
   if (AuthConfig.useFirebase) {
     try {
-      await Firebase.initializeApp();
+      await Firebase.initializeApp(
+          // options: DefaultFirebaseOptions.currentPlatform,
+          );
     } catch (e) {
       debugPrint('Error: Firebase initialization failed. $e');
 
