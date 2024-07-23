@@ -178,7 +178,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     title: Text(entry.value),
                     leading: Radio<String>(
                       value: entry.key,
-                      groupValue: question.correctAnswer,
+                      groupValue: null,
                       onChanged: (value) {},
                     ),
                   );
