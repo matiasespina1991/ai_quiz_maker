@@ -150,7 +150,7 @@ dependencies:
 #  firebase_remote_config: ^5.0.1
 
   intl: any
-#  firebase_vertexai: ^0.2.2+2
+  firebase_vertexai: ^0.2.2+2
 dev_dependencies:
   flutter_test:
     sdk: flutter

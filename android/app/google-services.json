@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "612904823734",
+    "project_id": "ai-quiz-maker",
+    "storage_bucket": "ai-quiz-maker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612904823734:android:a4dcd3f349e346751d6f17",
+        "android_client_info": {
+          "package_name": "com.matiasespina1991.aiquizmaker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "612904823734-2gk5lomgp2m8a2v8dubp8pgq9g3a7t0g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.matiasespina1991.aiquizmaker",
+            "certificate_hash": "41106c87d3c08523bb67736b759c3a43936596ca"
+          }
+        },
+        {
+          "client_id": "612904823734-3v72qrq7jsvp1li0kgkfikj8apn3fnr5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfVKsOX_ujNruWLvv2HSK22Ss3_jrCfPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "612904823734-3v72qrq7jsvp1li0kgkfikj8apn3fnr5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "612904823734-b4g12mc8p6kvt1rou3i4mei0b4c4n7gc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.matiasespina1991.aiquizmaker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
