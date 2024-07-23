@@ -24,6 +24,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool quizIsBeingGenerated = false;
   static TextEditingController _topicController = TextEditingController();
   Quiz? _quiz;
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
 
   @override
   void initState() {
@@ -33,6 +35,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void dispose() {
     _topicController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -79,6 +82,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   log(quiz.toJson().toString());
                   setState(() {
                     _quiz = quiz;
+                    _currentPage = 0;
                   });
                 } catch (e) {
                   print('Error generating quiz: $e');
@@ -99,51 +103,91 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         color: Colors.white.withOpacity(0.9),
                       ),
                     )
-                  : Text('Trigger AI'),
+                  : const Text('Trigger AI'),
             ),
             const SizedBox(height: 20),
-            _quiz != null ? _buildQuiz() : Container(),
+            _quiz != null
+                ? SizedBox(
+                    height: 400,
+                    child: PageView.builder(
+                      controller: _pageController,
+                      itemCount: _quiz!.quiz.length,
+                      onPageChanged: (index) {
+                        setState(() {
+                          _currentPage = index;
+                        });
+                      },
+                      itemBuilder: (context, index) {
+                        return _buildQuizPage(_quiz!.quiz[index]);
+                      },
+                    ),
+                  )
+                : Container(),
+            const SizedBox(height: 10),
+            if (_quiz != null && _currentPage < _quiz!.quiz.length - 1)
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_currentPage < _quiz!.quiz.length - 1) {
+                      _pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    }
+                  },
+                  child: const Text('Next'),
+                ),
+              ),
+            if (_quiz != null && _currentPage == _quiz!.quiz.length - 1)
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Logic for completing the quiz can be added here
+                  },
+                  child: const Text('Finish'),
+                ),
+              ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildQuiz() {
-    return Column(
-      children: _quiz!.quiz.map((question) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    question.question,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+  Widget _buildQuizPage(QuizQuestion question) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  question.question,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
-                  const SizedBox(height: 10),
-                  ...question.options.entries.map((entry) {
-                    return ListTile(
-                      title: Text(entry.value),
-                      leading: Radio<String>(
-                        value: entry.key,
-                        groupValue: question.correctAnswer,
-                        onChanged: (value) {},
-                      ),
-                    );
-                  }).toList(),
-                ],
-              ),
+                ),
+                const SizedBox(height: 10),
+                ...question.options.entries.map((entry) {
+                  return ListTile(
+                    title: Text(entry.value),
+                    leading: Radio<String>(
+                      value: entry.key,
+                      groupValue: question.correctAnswer,
+                      onChanged: (value) {},
+                    ),
+                  );
+                }).toList(),
+              ],
             ),
           ),
-        );
-      }).toList(),
+        ),
+      ),
     );
   }
 }
