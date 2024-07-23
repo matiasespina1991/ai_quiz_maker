@@ -26,6 +26,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Quiz? _quiz;
   final PageController _pageController = PageController();
   int _currentPage = 0;
+  Map<int, String?> _selectedAnswers = {};
 
   @override
   void initState() {
@@ -83,6 +84,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   setState(() {
                     _quiz = quiz;
                     _currentPage = 0;
+                    _selectedAnswers.clear();
                   });
                 } catch (e) {
                   print('Error generating quiz: $e');
@@ -118,7 +120,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         });
                       },
                       itemBuilder: (context, index) {
-                        return _buildQuizPage(_quiz!.quiz[index]);
+                        return _buildQuizPage(index, _quiz!.quiz[index]);
                       },
                     ),
                   )
@@ -143,9 +145,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Logic for completing the quiz can be added here
-                  },
+                  onPressed: _showScore,
                   child: const Text('Finish'),
                 ),
               ),
@@ -155,7 +155,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildQuizPage(QuizQuestion question) {
+  Widget _buildQuizPage(int index, QuizQuestion question) {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Card(
@@ -178,8 +178,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     title: Text(entry.value),
                     leading: Radio<String>(
                       value: entry.key,
-                      groupValue: null,
-                      onChanged: (value) {},
+                      groupValue: _selectedAnswers[index],
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedAnswers[index] = value;
+                        });
+                      },
                     ),
                   );
                 }).toList(),
@@ -188,6 +192,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showScore() {
+    int score = 0;
+    _quiz!.quiz.asMap().forEach((index, question) {
+      if (_selectedAnswers[index] == question.correctAnswer) {
+        score++;
+      }
+    });
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Quiz Completed'),
+          content: Text('Your score is $score out of ${_quiz!.quiz.length}'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
