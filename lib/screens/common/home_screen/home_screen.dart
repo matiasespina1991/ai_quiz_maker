@@ -44,6 +44,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       isProtected: true,
+      hideFloatingSpeedDialMenu: true,
       appBarTitle: S.of(context).homeScreenTitle,
       body: SingleChildScrollView(
         child: Column(
@@ -105,7 +106,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         color: Colors.white.withOpacity(0.9),
                       ),
                     )
-                  : const Text('Trigger AI'),
+                  : const Text('Generate Quiz'),
             ),
             const SizedBox(height: 20),
             _quiz != null
