@@ -208,7 +208,86 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Quiz Completed'),
-          content: Text('Your score is $score out of ${_quiz!.quiz.length}'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Your score is $score out of ${_quiz!.quiz.length}'),
+                const SizedBox(height: 10),
+                ..._quiz!.quiz.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final question = entry.value;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Question ${index + 1}:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text('${question.question}'),
+                      // Text(
+                      //     'Your answer: ${question.options[_selectedAnswers[index]] ?? "Not answered"}',
+                      //     style: TextStyle(
+                      //       fontWeight: _selectedAnswers[index] ==
+                      //               question.correctAnswer
+                      //           ? FontWeight.bold
+                      //           : FontWeight.normal,
+                      //     )),
+
+                      RichText(
+                          text: TextSpan(
+                        text: 'Your answer: ',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: question.options[_selectedAnswers[index]] ??
+                                "Not answered",
+                            style: TextStyle(
+                              fontWeight: _selectedAnswers[index] ==
+                                      question.correctAnswer
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                          if (_selectedAnswers[index] == question.correctAnswer)
+                            const TextSpan(
+                              text: '✅',
+                              style: TextStyle(
+                                color: Colors.red,
+                              ),
+                            ),
+                        ],
+                      )),
+
+                      RichText(
+                          text: TextSpan(
+                        text: 'Correct answer: ',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: question.options[question.correctAnswer],
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      )),
+                      // Text(
+                      //     'Correct answer: ${question.options[question.correctAnswer]}',
+                      //     style: TextStyle(
+                      //       fontWeight: FontWeight.bold,
+                      //     )),
+                      const SizedBox(height: 10),
+                    ],
+                  );
+                }).toList(),
+              ],
+            ),
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
