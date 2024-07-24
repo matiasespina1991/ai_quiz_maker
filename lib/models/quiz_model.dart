@@ -1,16 +1,16 @@
-class QuizQuestion {
+class QuizModel {
   final String question;
   final Map<String, String> options;
   final String correctAnswer;
 
-  QuizQuestion({
+  QuizModel({
     required this.question,
     required this.options,
     required this.correctAnswer,
   });
 
-  factory QuizQuestion.fromJson(Map<String, dynamic> json) {
-    return QuizQuestion(
+  factory QuizModel.fromJson(Map<String, dynamic> json) {
+    return QuizModel(
       question: json['question'],
       options: Map<String, String>.from(json['options']),
       correctAnswer: json['correct_answer'],
@@ -26,17 +26,16 @@ class QuizQuestion {
   }
 }
 
-class Quiz {
-  final List<QuizQuestion> quiz;
+class GeminiQuizResponse {
+  final List<QuizModel> quiz;
 
-  Quiz({required this.quiz});
+  GeminiQuizResponse({required this.quiz});
 
-  factory Quiz.fromJson(Map<String, dynamic> json) {
+  factory GeminiQuizResponse.fromJson(Map<String, dynamic> json) {
     var list = json['quiz'] as List;
-    List<QuizQuestion> quizList =
-        list.map((i) => QuizQuestion.fromJson(i)).toList();
+    List<QuizModel> quizList = list.map((i) => QuizModel.fromJson(i)).toList();
 
-    return Quiz(quiz: quizList);
+    return GeminiQuizResponse(quiz: quizList);
   }
 
   Map<String, dynamic> toJson() {

@@ -3,10 +3,8 @@ import 'package:ai_quiz_maker_app/widgets/LoadingCircle/loading_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
 import 'package:ai_quiz_maker_app/app_settings/app_general_settings.dart';
 import 'package:ai_quiz_maker_app/widgets/AppScaffold/app_scaffold.dart';
-
 import '../../../generated/l10n.dart';
 import '../../../providers/providers_all.dart';
 import '../../../services/gemini_service.dart';
@@ -25,10 +23,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
   bool quizIsBeingGenerated = false;
   static TextEditingController _topicController = TextEditingController();
-  Quiz? _quiz;
+  GeminiQuizResponse? _quiz;
   final PageController _pageController = PageController();
   int _currentPage = 0;
   Map<int, String?> _selectedAnswers = {};
+
+  String _selectedDifficulty = 'hard';
+  String _selectedLanguage = 'español';
 
   @override
   void initState() {
@@ -46,7 +47,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       isProtected: true,
-      hideFloatingSpeedDialMenu: true,
       appBarTitle: S.of(context).homeScreenTitle,
       body: SingleChildScrollView(
         child: Column(
@@ -58,6 +58,48 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Insert a topic for the quiz',
+                hintStyle: TextStyle(color: Colors.grey),
+              ),
+            ),
+            const SizedBox(height: 10),
+            DropdownButtonFormField<String>(
+              value: _selectedDifficulty,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedDifficulty = newValue!;
+                });
+              },
+              items: <String>['easy', 'medium', 'hard', 'very hard']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Select difficulty',
+                hintStyle: TextStyle(color: Colors.grey),
+              ),
+            ),
+            const SizedBox(height: 10),
+            DropdownButtonFormField<String>(
+              value: _selectedLanguage,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedLanguage = newValue!;
+                });
+              },
+              items: <String>['english', 'español']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Select language',
                 hintStyle: TextStyle(color: Colors.grey),
               ),
             ),
@@ -80,7 +122,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 try {
                   final quiz = await geminiService.generateQuiz(
                     topic: _topicController.text,
-                    difficulty: 'hard',
+                    difficulty: _selectedDifficulty,
+                    language: _selectedLanguage,
                   );
 
                   log(quiz.toJson().toString());
@@ -108,7 +151,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         color: Colors.white.withOpacity(0.9),
                       ),
                     )
-                  : const Text('Generate Quiz'),
+                  : const Text('Trigger AI'),
             ),
             const SizedBox(height: 20),
             _quiz != null
@@ -158,7 +201,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildQuizPage(int index, QuizQuestion question) {
+  Widget _buildQuizPage(int index, QuizModel question) {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Card(
