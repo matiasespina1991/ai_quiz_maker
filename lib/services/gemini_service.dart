@@ -23,9 +23,10 @@ class GeminiService {
     required String topic,
     required String difficulty,
     required String language,
+    required int questionCount,
   }) async {
     final prompt = '''
-    Generate a JSON object with 5 multiple-choice questions about the topic "${topic}". The questions should be of "${difficulty}" difficulty and in "${language}". Each question should have four answer options labeled as A, B, C, and D, and include the correct answer. Please avoid using any code character that could break the json like a "". The JSON structure should look like this:
+    Generate a JSON object with ${questionCount} multiple-choice questions about the topic "${topic}". The questions should be of "${difficulty}" difficulty and in "${language}". Each question should have four answer options labeled as A, B, C, and D, and include the correct answer. Please avoid using any code character that could break the json like a "". The JSON structure should look like this:
     {
       "quiz": [
         {
