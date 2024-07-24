@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:aiquizmaker/app_settings/theme_settings.dart';
+
+import 'package:ai_quiz_maker_app/app_settings/theme_settings.dart';
 
 class InputTheme {
   static InputDecorationTheme inputDecorationTheme(

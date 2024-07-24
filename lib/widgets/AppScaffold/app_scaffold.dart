@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:aiquizmaker/app_settings/app_general_settings.dart';
-import 'package:aiquizmaker/app_settings/auth_config.dart';
-import 'package:aiquizmaker/providers/providers_all.dart';
-import 'package:aiquizmaker/utils/ui/is_dark_mode.dart';
-import 'package:aiquizmaker/widgets/NotificationModal/notification_modal.dart';
-import 'package:aiquizmaker/widgets/NotificationSnackbar/notification_snackbar.dart';
+
+import 'package:ai_quiz_maker_app/app_settings/app_general_settings.dart';
+import 'package:ai_quiz_maker_app/app_settings/auth_config.dart';
+import 'package:ai_quiz_maker_app/providers/providers_all.dart';
+import 'package:ai_quiz_maker_app/utils/ui/is_dark_mode.dart';
+import 'package:ai_quiz_maker_app/widgets/NotificationModal/notification_modal.dart';
+import 'package:ai_quiz_maker_app/widgets/NotificationSnackbar/notification_snackbar.dart';
 
 import 'package:go_router/go_router.dart';
 import '../../app_settings/theme_settings.dart';

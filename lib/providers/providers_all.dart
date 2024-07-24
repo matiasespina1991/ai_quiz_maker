@@ -1,7 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:aiquizmaker/providers/auth_provider.dart';
-import 'package:aiquizmaker/providers/locale_provider.dart';
-import 'package:aiquizmaker/providers/theme_provider.dart';
+
+import 'package:ai_quiz_maker_app/providers/auth_provider.dart';
+import 'package:ai_quiz_maker_app/providers/locale_provider.dart';
+import 'package:ai_quiz_maker_app/providers/theme_provider.dart';
 
 import '../services/connectivity_service.dart';
 

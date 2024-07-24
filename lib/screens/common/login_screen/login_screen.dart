@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:flutter/services.dart';
-import 'package:aiquizmaker/app_settings/auth_config.dart';
-import 'package:aiquizmaker/generated/l10n.dart';
+
+import 'package:ai_quiz_maker_app/app_settings/auth_config.dart';
+import 'package:ai_quiz_maker_app/generated/l10n.dart';
+
 import '../../../app_settings/theme_settings.dart';
 import '../../../providers/providers_all.dart';
 import '../../../utils/ui/is_dark_mode.dart';

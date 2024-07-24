@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:aiquizmaker/app_settings/language_settings.dart';
+
+import 'package:ai_quiz_maker_app/app_settings/language_settings.dart';
 
 class LocaleProvider extends ChangeNotifier {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();

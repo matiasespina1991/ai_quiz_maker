@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="Ai Quiz Maker App"
+
+        android:label="AI Quiz Maker App"
+
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
