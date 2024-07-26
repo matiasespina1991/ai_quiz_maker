@@ -47,6 +47,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.dispose();
   }
 
+  doAnotherAttempt() {
+    attemptGenerateQuiz();
+  }
+
   void attemptGenerateQuiz() async {
     if (quizIsBeingGenerated) {
       return;
@@ -54,9 +58,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     setState(() {
       quizIsBeingGenerated = true;
-    });
-
-    setState(() {
       _quiz = null;
       _currentPage = 0;
       _selectedAnswers = {};
@@ -73,34 +74,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     final geminiService = GeminiService();
     try {
-      print('asa');
-      final quiz = throw UnimplementedError();
-
-      await geminiService.generateQuiz(
+      var quiz = await geminiService.generateQuiz(
         topic: _topicController.text,
         difficulty: _selectedDifficulty,
         language: _selectedLanguage,
         questionCount: _selectedQuestionCount,
       );
 
-      log(quiz.toJson().toString());
       setState(() {
         _quiz = quiz;
         _currentPage = 0;
-        _selectedAnswers.clear();
-        _isAnswerCorrect.clear();
+        _selectedAnswers = {};
+        _isAnswerCorrect = {};
       });
     } catch (e) {
-      print('Amount of tries: $amountOfRequestsTries');
-      if (amountOfRequestsTries <= 2) {
+      if (amountOfRequestsTries < 2) {
         setState(() {
           amountOfRequestsTries++;
         });
-
-        print('amountOfRequestsTries: $amountOfRequestsTries');
-
-        attemptGenerateQuiz();
-        return;
+        print('Amount of tries: $amountOfRequestsTries');
       }
 
       print('Error generating quiz: $e');
@@ -121,6 +113,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     setState(() {
       quizIsBeingGenerated = false;
+      amountOfRequestsTries = 0; // Reset attempts after completing the process
     });
   }
 
