@@ -6,6 +6,7 @@ class InputTheme {
   static InputDecorationTheme inputDecorationTheme(
       Brightness brightness, ColorScheme colorScheme) {
     return InputDecorationTheme(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 19, vertical: 15),
       hintStyle: TextStyle(
         color: brightness == Brightness.light
             ? ThemeSettings.primaryTextColor.lightModePrimary
@@ -20,7 +21,7 @@ class InputTheme {
         borderRadius: ThemeSettings.inputsBorderRadius,
         borderSide: BorderSide(
           color: brightness == Brightness.light
-              ? ThemeSettings.primaryTextColor.lightModePrimary
+              ? ThemeSettings.primaryTextColor.lightModePrimary.withOpacity(0.6)
               : ThemeSettings.primaryTextColor.darkModePrimary,
         ),
       ),
@@ -29,6 +30,7 @@ class InputTheme {
         borderSide: BorderSide(
           color: brightness == Brightness.light
               ? ThemeSettings.primaryTextColor.lightModePrimary
+                  .withOpacity(0.15)
               : ThemeSettings.primaryTextColor.darkModePrimary,
         ),
       ),

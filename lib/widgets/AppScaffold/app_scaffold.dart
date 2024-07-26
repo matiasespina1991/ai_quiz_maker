@@ -96,13 +96,17 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
       bottom: widget.useSafeArea ?? ThemeSettings.useSafeArea,
       top: widget.useSafeArea ?? ThemeSettings.useSafeArea,
       child: Scaffold(
-        appBar: (AppGeneralSettings.useTopAppBar || widget.useTopAppBar)
-            ? ThemeAppBar(
-                appBarHeight: ThemeSettings.appBarHeight,
-                centerTitle: widget.centerTitle,
-                title: widget.showScreenTitleInAppBar ? widget.appBarTitle : '',
-              )
-            : null,
+        appBar: !widget.useTopAppBar
+            ? null
+            : (AppGeneralSettings.useTopAppBar && !widget.useTopAppBar)
+                ? ThemeAppBar(
+                    appBarHeight: ThemeSettings.appBarHeight,
+                    centerTitle: widget.centerTitle,
+                    title: widget.showScreenTitleInAppBar
+                        ? widget.appBarTitle
+                        : '',
+                  )
+                : null,
         body: Stack(
           fit: StackFit.expand,
           children: [

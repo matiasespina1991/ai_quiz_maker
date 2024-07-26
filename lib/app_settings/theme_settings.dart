@@ -4,24 +4,24 @@ import '../models/theme_models.dart';
 
 class ThemeSettings {
   static const String defaultThemeMode = 'light';
-  static const bool forceDefaultThemeMode = false;
+  static const bool forceDefaultThemeMode = true;
   static const bool useMaterial3 = true;
   static const bool useSafeArea = true;
   static const EdgeInsetsGeometry scaffoldPadding = EdgeInsets.only(
-    top: 30,
+    top: 10,
     bottom: 0,
-    left: 20,
-    right: 20,
+    left: 10,
+    right: 10,
   );
   static double appBarHeight = 50;
-  static const Color seedColor = Colors.blueGrey;
+  static const Color seedColor = Colors.green;
   static const bool forceSeedColor = false;
   static const String defaultScrollPhysics =
       'always'; // 'never', 'always', 'clamp'
   static const bool useFlutterToast = false;
   static const String textInputBorderStyle = 'border'; // 'border' / 'no-border'
   static const bool glassTextInputs = true;
-  static const double buttonsElevation = 1.1;
+  static const double buttonsElevation = 2;
   static const double buttonsHeight = 47;
   static const double buttonsOpacity = 0.9;
   static const String noInternetNotificationType =
@@ -62,14 +62,22 @@ class ThemeSettings {
 
   static const errorColor = Colors.red;
 
+  static ColorPalette colorPalette = ColorPalette(
+    first: const Color(0xFFE0E0E0),
+    second: const Color(0xFFBDBDBD),
+    third: const Color(0xFF9E9E9E),
+    fourth: const Color(0xFF757575),
+    fifth: const Color(0xFF616161),
+  );
+
   static const ThemeColors scaffoldBackgroundColor = ThemeColors(
     lightModePrimary: Color(0xFFFFF8FE),
     darkModePrimary: Color(0xFF121212),
   );
 
   static const ThemeColors appBarBackgroundColor = ThemeColors(
-    lightModePrimary: Colors.blueGrey,
-    darkModePrimary: Colors.blueGrey,
+    lightModePrimary: Colors.transparent,
+    darkModePrimary: Colors.transparent,
   );
 
   static const ThemeColors primaryTextColor = ThemeColors(
@@ -98,11 +106,11 @@ class ThemeSettings {
   );
 
   static const ThemeColors appbarOnBackgroundColor = ThemeColors(
-    lightModePrimary: Colors.white,
+    lightModePrimary: Colors.black,
     darkModePrimary: Colors.white,
   );
   static const ThemeColors elevatedButtonBackgroundColor = ThemeColors(
-    lightModePrimary: Colors.blueGrey,
+    lightModePrimary: seedColor,
     darkModePrimary: Colors.white,
   );
 
@@ -127,15 +135,15 @@ class ThemeSettings {
   );
 
   static const BorderRadius buttonsBorderRadius = BorderRadius.all(
-    Radius.circular(5),
+    Radius.circular(10),
   );
 
   static const BorderRadius inputsBorderRadius = BorderRadius.all(
-    Radius.circular(5),
+    Radius.circular(15),
   );
 
   static const BorderRadius cardBorderRadius = BorderRadius.all(
-    Radius.circular(5),
+    Radius.circular(40),
   );
 
   static const BorderRadius chipBorderRadius = BorderRadius.all(
@@ -155,12 +163,12 @@ class ThemeSettings {
   );
 
   static const FontConfig primaryTextStyle = FontConfig(
-    name: 'Roboto',
-    isGoogleFont: true,
+    name: 'Wallop',
+    isGoogleFont: false,
   );
 
   static const FontConfig secondaryTextStyle = FontConfig(
-    name: 'Open Sans',
+    name: 'Chathura',
     isGoogleFont: true,
   );
 
@@ -175,7 +183,7 @@ class ThemeSettings {
   );
 
   static const double appBarTitleFontSize = 20;
-  static const double bodyLargeFontSize = 16;
+  static const double bodyLargeFontSize = 14;
   static const double bodyMediumFontSize = 13;
   static const double bodySmallFontSize = 12;
   static const double snackbarFontSize = 14;
@@ -185,4 +193,20 @@ class ThemeSettings {
     secondaryFont: secondaryTextStyle,
     tertiaryFont: tertiaryTextStyle,
   );
+}
+
+class ColorPalette {
+  final Color first;
+  final Color second;
+  final Color third;
+  final Color fourth;
+  final Color fifth;
+
+  ColorPalette({
+    required this.first,
+    required this.second,
+    required this.third,
+    required this.fourth,
+    required this.fifth,
+  });
 }

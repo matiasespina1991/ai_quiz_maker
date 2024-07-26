@@ -121,8 +121,16 @@ class MainTheme {
       headlineMedium: _applyFont(base.headlineMedium, font),
       headlineSmall: _applyFont(base.headlineSmall, font),
       titleLarge: _applyFont(base.titleLarge, font),
-      titleMedium: _applyFont(base.titleMedium, font),
-      titleSmall: _applyFont(base.titleSmall, font),
+      titleMedium: _applyFont(
+          base.titleMedium?.copyWith(
+            fontSize: ThemeSettings.bodyLargeFontSize,
+          ),
+          font),
+      titleSmall: _applyFont(
+          base.titleSmall?.copyWith(
+            fontSize: ThemeSettings.bodyLargeFontSize,
+          ),
+          font),
       bodyLarge: _applyFont(
           base.bodyLarge?.copyWith(
             fontSize: ThemeSettings.bodyLargeFontSize,
@@ -138,9 +146,21 @@ class MainTheme {
             fontSize: ThemeSettings.bodySmallFontSize,
           ),
           font),
-      labelLarge: _applyFont(base.labelLarge, font),
-      labelMedium: _applyFont(base.labelMedium, font),
-      labelSmall: _applyFont(base.labelSmall, font),
+      labelLarge: _applyFont(
+          base.labelLarge?.copyWith(
+            fontSize: ThemeSettings.bodyLargeFontSize,
+          ),
+          font),
+      labelMedium: _applyFont(
+          base.labelMedium?.copyWith(
+            fontSize: ThemeSettings.bodyLargeFontSize,
+          ),
+          font),
+      labelSmall: _applyFont(
+          base.labelSmall?.copyWith(
+            fontSize: ThemeSettings.bodyLargeFontSize,
+          ),
+          font),
     );
   }
 
