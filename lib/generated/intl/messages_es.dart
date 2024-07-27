@@ -26,17 +26,24 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("es"),
+        "amountOfQuestionsLabel":
+            MessageLookupByLibrary.simpleMessage("Cantidad de preguntas"),
         "back": MessageLookupByLibrary.simpleMessage("Atrás"),
         "backToInternetConnection":
             MessageLookupByLibrary.simpleMessage("Estás de vuelta en línea"),
         "buttonsSectionTitle": MessageLookupByLibrary.simpleMessage("Botones"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
+        "check": MessageLookupByLibrary.simpleMessage("Verificar"),
         "chipOneLabel": MessageLookupByLibrary.simpleMessage("Chip Uno"),
         "chipThreeLabel": MessageLookupByLibrary.simpleMessage("Chip Tres"),
         "chipTwoLabel": MessageLookupByLibrary.simpleMessage("Chip Dos"),
         "chipsSectionTitle": MessageLookupByLibrary.simpleMessage("Chips"),
         "continueButton": MessageLookupByLibrary.simpleMessage("Continuar"),
+        "correctAnswer":
+            MessageLookupByLibrary.simpleMessage("Respuesta correcta"),
         "darkMode": MessageLookupByLibrary.simpleMessage("Modo oscuro"),
+        "difficultyLabel": MessageLookupByLibrary.simpleMessage("Dificultad"),
+        "easyDifficulty": MessageLookupByLibrary.simpleMessage("Fácil"),
         "elevatedButtonLabel":
             MessageLookupByLibrary.simpleMessage("Botón Elevado"),
         "email": MessageLookupByLibrary.simpleMessage("email"),
@@ -44,6 +51,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "emailLabel": MessageLookupByLibrary.simpleMessage("EMAIL"),
         "emptyFields":
             MessageLookupByLibrary.simpleMessage("Algunos campos están vacíos"),
+        "errorGeneratingQuizMessage": MessageLookupByLibrary.simpleMessage(
+            "Error al generar el cuestionario"),
         "errorSigningInWithGoogleSnackbarMessage":
             MessageLookupByLibrary.simpleMessage(
                 "Hubo un error al iniciar sesión con Google. Por favor, inténtelo de nuevo o contacte con el soporte."),
@@ -89,10 +98,18 @@ class MessageLookup extends MessageLookupByLibrary {
             "Hubo un error al intentar cerrar sesión. Inténtalo de nuevo."),
         "fillAllFields": MessageLookupByLibrary.simpleMessage(
             "Por favor completa lo/s siguiente/s campo/s:"),
+        "finish": MessageLookupByLibrary.simpleMessage("Finalizar"),
+        "generateQuizButton":
+            MessageLookupByLibrary.simpleMessage("Generar Cuestionario"),
+        "generatingQuizMessage":
+            MessageLookupByLibrary.simpleMessage("Generando cuestionario..."),
         "gotIt": MessageLookupByLibrary.simpleMessage("Entendido"),
+        "hardDifficulty": MessageLookupByLibrary.simpleMessage("Difícil"),
         "homeScreenTitle":
-            MessageLookupByLibrary.simpleMessage("Pantalla Principal"),
+            MessageLookupByLibrary.simpleMessage("Pantalla de Inicio"),
         "inputsSectionTitle": MessageLookupByLibrary.simpleMessage("Entradas"),
+        "insertTopicHint": MessageLookupByLibrary.simpleMessage(
+            "Inserte un tema para el cuestionario"),
         "invalidEmailMessage": MessageLookupByLibrary.simpleMessage(
             "Inserte un correo electrónico válido, por favor."),
         "invalidEmailSnackbarMessage": MessageLookupByLibrary.simpleMessage(
@@ -103,6 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "La contraseña insertada no es válida."),
         "invalidPasswordTooShortMessage": MessageLookupByLibrary.simpleMessage(
             "La contraseña debe tener al menos 6 caracteres."),
+        "languageLabel": MessageLookupByLibrary.simpleMessage("Idioma"),
         "lightMode": MessageLookupByLibrary.simpleMessage("Modo claro"),
         "lightModeDarkMode":
             MessageLookupByLibrary.simpleMessage("Modo claro / modo oscuro"),
@@ -118,6 +136,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginSuccessfulMessage":
             MessageLookupByLibrary.simpleMessage("Haz iniciado sesión!"),
         "logoutButton": MessageLookupByLibrary.simpleMessage("Cerrar sesión"),
+        "mediumDifficulty": MessageLookupByLibrary.simpleMessage("Media"),
+        "next": MessageLookupByLibrary.simpleMessage("Siguiente"),
         "no": MessageLookupByLibrary.simpleMessage("No"),
         "noInternetConnection":
             MessageLookupByLibrary.simpleMessage("Sin conexión a Internet"),
@@ -131,6 +151,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "passwordLabel": MessageLookupByLibrary.simpleMessage("CONTRASEÑA"),
         "pleaseFillTheFollowingFields": MessageLookupByLibrary.simpleMessage(
             "Por favor, rellene los siguientes campos:"),
+        "questions": MessageLookupByLibrary.simpleMessage("preguntas"),
+        "selectDifficultyHint":
+            MessageLookupByLibrary.simpleMessage("Seleccionar dificultad"),
+        "selectLanguageHint":
+            MessageLookupByLibrary.simpleMessage("Seleccionar idioma"),
+        "selectQuestionCountHint": MessageLookupByLibrary.simpleMessage(
+            "Seleccionar cantidad de preguntas"),
         "settingsButton":
             MessageLookupByLibrary.simpleMessage("Configuraciones"),
         "signInWithGoogleButtonLabel":
@@ -169,11 +196,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Botón de Texto"),
         "textFieldLabel":
             MessageLookupByLibrary.simpleMessage("Campo de Texto de Ejemplo"),
+        "topicIsEmptyMessage":
+            MessageLookupByLibrary.simpleMessage("El tema está vacío"),
         "unableToLoginNoInternet":
             MessageLookupByLibrary.simpleMessage("No se puede iniciar sesión"),
         "unauthorizedAccess":
             MessageLookupByLibrary.simpleMessage("Acceso no autorizado"),
         "unauthorizedAccessMessage": m0,
+        "veryHardDifficulty":
+            MessageLookupByLibrary.simpleMessage("Muy Difícil"),
         "yes": MessageLookupByLibrary.simpleMessage("Sí"),
         "youAreCurrentlyOfflineMessage": MessageLookupByLibrary.simpleMessage(
             "Actualmente estás sin conexión a Internet.")

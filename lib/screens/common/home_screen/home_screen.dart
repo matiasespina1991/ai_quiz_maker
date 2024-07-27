@@ -1,8 +1,10 @@
+import 'package:ai_quiz_maker_app/utils/locale/difficulty_to_locale_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../generated/l10n.dart';
 import '../../../providers/providers_all.dart';
 import '../../../services/gemini_service.dart';
+import '../../../utils/locale/language_code_to_language_name.dart';
 import '../../../widgets/LoadingCircle/loading_circle.dart';
 import '../../../widgets/NotificationSnackbar/notification_snackbar.dart';
 import '../../../app_settings/app_general_settings.dart';
@@ -25,8 +27,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   GeminiQuizResponse? _quiz;
   int amountOfRequestsTries = 0;
 
-  String _selectedDifficulty = 'Hard';
-  String _selectedLanguage = 'Español 🇪🇸';
+  String _selectedDifficulty = 'hard';
+  String _selectedLanguage = 'es';
   int _selectedQuestionCount = 5;
 
   @override
@@ -54,7 +56,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       setState(() {
         quizIsBeingGenerated = false;
       });
-      debugPrint('Topic is empty');
+      debugPrint(S.of(context).topicIsEmptyMessage);
       return;
     }
 
@@ -63,7 +65,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       var quiz = await geminiService.generateQuiz(
         topic: _topicController.text,
         difficulty: _selectedDifficulty,
-        language: _selectedLanguage,
+        languageCode: _selectedLanguage,
         questionCount: _selectedQuestionCount,
       );
 
@@ -95,7 +97,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       NotificationSnackbar.showSnackBar(
         icon: Icons.error,
         variant: 'error',
-        message: 'Error generating quiz',
+        message: S.of(context).errorGeneratingQuizMessage,
         duration: 'short',
       );
     }
@@ -125,23 +127,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           value: _selectedLanguage,
                           isDense: true,
                           onChanged: (String? newValue) {
+                            ref
+                                .watch(localeProvider)
+                                .setLocale(Locale(newValue!));
                             setState(() {
-                              _selectedLanguage = newValue!;
+                              _selectedLanguage = newValue;
                             });
                           },
-                          items: <String>['English 🇬🇧', 'Español 🇪🇸']
+                          items: <String>['en', 'es']
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value),
+                              child: Text(languageCodeToLanguageName(value)),
                             );
                           }).toList(),
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 19),
-                            label: Text('Language'),
+                            labelText: S.of(context).languageLabel,
                             border: OutlineInputBorder(),
-                            hintText: 'Select language',
+                            hintText: S.of(context).selectLanguageHint,
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
                         ),
@@ -155,19 +160,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               _selectedDifficulty = newValue!;
                             });
                           },
-                          items: <String>['Easy', 'Medium', 'Hard', 'Very hard']
+                          items: <String>['easy', 'medium', 'hard', 'very hard']
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value),
+                              child:
+                                  Text(difficultyToLocaleText(value, context)),
                             );
                           }).toList(),
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 19),
-                            label: Text('Difficulty'),
+                            labelText: S.of(context).difficultyLabel,
                             border: OutlineInputBorder(),
-                            hintText: 'Select difficulty',
+                            hintText: S.of(context).selectDifficultyHint,
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
                         ),
@@ -186,13 +192,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         .map<DropdownMenuItem<int>>((int value) {
                       return DropdownMenuItem<int>(
                         value: value,
-                        child: Text('$value questions'),
+                        child: Text('$value ${S.of(context).questions}'),
                       );
                     }).toList(),
-                    decoration: const InputDecoration(
-                      label: Text('Amount of questions'),
+                    decoration: InputDecoration(
+                      labelText: S.of(context).amountOfQuestionsLabel,
                       border: OutlineInputBorder(),
-                      hintText: 'Select number of questions',
+                      hintText: S.of(context).selectQuestionCountHint,
                       hintStyle: TextStyle(color: Colors.grey),
                     ),
                   ),
@@ -203,11 +209,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   const SizedBox(height: 14),
                   TextField(
                     controller: _topicController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: const Icon(
+                          Icons.clear,
+                          size: 21,
+                        ),
+                        onPressed: () {
+                          _topicController.clear();
+                        },
+                      ),
                       contentPadding:
                           EdgeInsets.symmetric(horizontal: 19, vertical: 17),
                       border: OutlineInputBorder(),
-                      hintText: 'Insert a topic for the quiz',
+                      hintText: S.of(context).insertTopicHint,
                       hintStyle: TextStyle(color: Colors.grey),
                     ),
                   ),
@@ -221,7 +236,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('Generating quiz...'),
+                              Text(S.of(context).generatingQuizMessage),
                               SizedBox(width: 15),
                               SizedBox(
                                 width: 16,
@@ -232,7 +247,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               ),
                             ],
                           )
-                        : const Text('Generate Quiz'),
+                        : Text(S.of(context).generateQuizButton),
                   ),
                 ],
               ),

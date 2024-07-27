@@ -87,5 +87,19 @@
         "noInternetMessageOnLoginAttempt": "Du hast versucht, dich anzumelden, aber du hast keine Internetverbindung. Bitte verbinde dich mit dem Internet und versuche es erneut.",
         "noInternetConnection": "Keine Internetverbindung",
         "youAreCurrentlyOfflineMessage": "Sie sind derzeit offline. Bitte überprüfen Sie Ihre Internetverbindung.",
-         "backToInternetConnection": "Sie sind wieder online"
+         "backToInternetConnection": "Sie sind wieder online",
+          "homeScreenTitle": "Startbildschirm",
+           "languageLabel": "Sprache",
+           "difficultyLabel": "Schwierigkeitsgrad",
+           "amountOfQuestionsLabel": "Anzahl der Fragen",
+           "selectLanguageHint": "Sprache auswählen",
+           "selectDifficultyHint": "Schwierigkeitsgrad auswählen",
+           "selectQuestionCountHint": "Anzahl der Fragen auswählen",
+           "insertTopicHint": "Geben Sie ein Thema für das Quiz ein",
+           "generatingQuizMessage": "Quiz wird erstellt...",
+           "generateQuizButton": "Quiz erstellen",
+           "topicIsEmptyMessage": "Das Thema ist leer",
+           "errorGeneratingQuizMessage": "Fehler beim Erstellen des Quiz"
+
+
 }

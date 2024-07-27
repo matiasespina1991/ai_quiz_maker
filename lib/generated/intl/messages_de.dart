@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("de"),
+        "amountOfQuestionsLabel":
+            MessageLookupByLibrary.simpleMessage("Anzahl der Fragen"),
         "back": MessageLookupByLibrary.simpleMessage("Zurück"),
         "backToInternetConnection":
             MessageLookupByLibrary.simpleMessage("Sie sind wieder online"),
@@ -37,6 +39,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "chipsSectionTitle": MessageLookupByLibrary.simpleMessage("Chips"),
         "continueButton": MessageLookupByLibrary.simpleMessage("Weiter"),
         "darkMode": MessageLookupByLibrary.simpleMessage("Dunkelmodus"),
+        "difficultyLabel":
+            MessageLookupByLibrary.simpleMessage("Schwierigkeitsgrad"),
         "elevatedButtonLabel":
             MessageLookupByLibrary.simpleMessage("Erhöhte Taste"),
         "email": MessageLookupByLibrary.simpleMessage("E-Mail"),
@@ -44,6 +48,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "emailLabel": MessageLookupByLibrary.simpleMessage("E-MAIL"),
         "emptyFields":
             MessageLookupByLibrary.simpleMessage("Einige Felder sind leer"),
+        "errorGeneratingQuizMessage": MessageLookupByLibrary.simpleMessage(
+            "Fehler beim Erstellen des Quiz"),
         "errorSigningInWithGoogleSnackbarMessage":
             MessageLookupByLibrary.simpleMessage(
                 "Es gab einen Fehler bei der Anmeldung mit Google. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support."),
@@ -88,10 +94,16 @@ class MessageLookup extends MessageLookupByLibrary {
             "Beim Abmelden ist ein Fehler aufgetreten. Bitte versuche es erneut."),
         "fillAllFields": MessageLookupByLibrary.simpleMessage(
             "Bitte füllen Sie die folgenden Felder aus:"),
+        "generateQuizButton":
+            MessageLookupByLibrary.simpleMessage("Quiz erstellen"),
+        "generatingQuizMessage":
+            MessageLookupByLibrary.simpleMessage("Quiz wird erstellt..."),
         "gotIt": MessageLookupByLibrary.simpleMessage("Verstanden"),
         "homeScreenTitle":
             MessageLookupByLibrary.simpleMessage("Startbildschirm"),
         "inputsSectionTitle": MessageLookupByLibrary.simpleMessage("Eingaben"),
+        "insertTopicHint": MessageLookupByLibrary.simpleMessage(
+            "Geben Sie ein Thema für das Quiz ein"),
         "invalidEmailMessage": MessageLookupByLibrary.simpleMessage(
             "Bitte geben Sie eine gültige E-Mail-Adresse ein."),
         "invalidEmailSnackbarMessage": MessageLookupByLibrary.simpleMessage(
@@ -102,6 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Das eingegebene Passwort ist ungültig."),
         "invalidPasswordTooShortMessage": MessageLookupByLibrary.simpleMessage(
             "Das Passwort muss mindestens 6 Zeichen lang sein."),
+        "languageLabel": MessageLookupByLibrary.simpleMessage("Sprache"),
         "lightMode": MessageLookupByLibrary.simpleMessage("Hellmodus"),
         "lightModeDarkMode":
             MessageLookupByLibrary.simpleMessage("Hell-/Dunkelmodus"),
@@ -129,6 +142,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "passwordLabel": MessageLookupByLibrary.simpleMessage("PASSWORT"),
         "pleaseFillTheFollowingFields": MessageLookupByLibrary.simpleMessage(
             "Bitte füllen Sie die folgenden Felder aus:"),
+        "selectDifficultyHint": MessageLookupByLibrary.simpleMessage(
+            "Schwierigkeitsgrad auswählen"),
+        "selectLanguageHint":
+            MessageLookupByLibrary.simpleMessage("Sprache auswählen"),
+        "selectQuestionCountHint":
+            MessageLookupByLibrary.simpleMessage("Anzahl der Fragen auswählen"),
         "settingsButton": MessageLookupByLibrary.simpleMessage("Einstellungen"),
         "signInWithGoogleButtonLabel":
             MessageLookupByLibrary.simpleMessage("Mit Google anmelden"),
@@ -165,6 +184,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "textButtonLabel": MessageLookupByLibrary.simpleMessage("Text Taste"),
         "textFieldLabel":
             MessageLookupByLibrary.simpleMessage("Beispiel Textfeld"),
+        "topicIsEmptyMessage":
+            MessageLookupByLibrary.simpleMessage("Das Thema ist leer"),
         "unableToLoginNoInternet":
             MessageLookupByLibrary.simpleMessage("Anmeldung nicht möglich"),
         "unauthorizedAccess":

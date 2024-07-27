@@ -1,27 +1,66 @@
 import 'package:ai_quiz_maker_app/app_settings/theme_settings.dart';
+import 'package:ai_quiz_maker_app/providers/providers_all.dart';
+
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../generated/l10n.dart';
 import '../../../models/quiz_model.dart';
 import '../../../routes/routes.dart';
 import '../../../widgets/AppScaffold/app_scaffold.dart';
 
-class QuizScreen extends StatefulWidget {
+class QuizScreen extends ConsumerStatefulWidget {
   final GeminiQuizResponse quiz;
 
-  QuizScreen({required this.quiz});
+  const QuizScreen({super.key, required this.quiz});
 
   @override
   _QuizScreenState createState() => _QuizScreenState();
 }
 
-class _QuizScreenState extends State<QuizScreen> {
+class _QuizScreenState extends ConsumerState<QuizScreen> {
   final PageController _pageController = PageController();
+  final ScrollController _scrollController = ScrollController();
+  bool _isScrolledToBottom = true;
 
   Map<int, String?> _selectedAnswers = {};
   Map<int, bool?> _isAnswerCorrect = {};
   int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    setState(() {
+      _isScrolledToBottom = _scrollController.position.atEdge &&
+          _scrollController.position.pixels != 0;
+    });
+  }
+
+  double buttonWidthOnLocalizations(String languageCode) {
+    switch (languageCode) {
+      case 'en':
+        return 83;
+      case 'es':
+        return 83;
+      default:
+        return 83;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +68,11 @@ class _QuizScreenState extends State<QuizScreen> {
     final isSmallScreen = screenHeight < 700;
 
     return AppScaffold(
-      scrollPhysics: NeverScrollableScrollPhysics(),
+      scrollPhysics: const NeverScrollableScrollPhysics(),
       hideFloatingSpeedDialMenu: true,
+      useSafeArea: false,
       body: SingleChildScrollView(
-        physics: ClampingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -67,6 +107,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         ),
                       ),
                       onPressed: () {
+                        HapticFeedback.selectionClick();
                         _pageController.previousPage(
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
@@ -112,7 +153,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 },
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -125,6 +166,11 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget _buildQuizPage(int index, QuizModel question) {
     final double screenHeight = MediaQuery.of(context).size.height;
     final isSmallScreen = screenHeight < 700;
+    final currentLanguage = ref.watch(localeProvider).locale;
+    final userClickedOnCheck = _isAnswerCorrect[index] != null;
+    final userSelectedAnswer = _selectedAnswers[index];
+    final correctAnswer = question.correctAnswer;
+    final isAnswerCorrect = _isAnswerCorrect[index];
 
     return Card(
       color: ThemeSettings.colorPalette.first,
@@ -139,11 +185,12 @@ class _QuizScreenState extends State<QuizScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
               child: SingleChildScrollView(
-                physics: ClampingScrollPhysics(),
+                controller: _scrollController,
+                physics: const ClampingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     Padding(
@@ -196,127 +243,128 @@ class _QuizScreenState extends State<QuizScreen> {
 
                     /// OPTIONS
                     ...question.options.entries.map((entry) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2.5),
-                        child: GestureDetector(
-                          onTap: _isAnswerCorrect[index] == null
-                              ? () {
-                                  setState(() {
-                                    _selectedAnswers[index] = entry.key;
-                                  });
-                                }
-                              : null,
-                          child: Card(
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(17),
-                              side: BorderSide(
-                                color: _isAnswerCorrect[index] != null &&
-                                        widget.quiz.quiz[index].correctAnswer ==
-                                            entry.key
-                                    ? Colors.green
-                                    : _getRadioColor(index, entry.key),
-                                width: (_isAnswerCorrect[index] != null &&
-                                        widget.quiz.quiz[index].correctAnswer ==
-                                            entry.key)
-                                    ? 2.1
-                                    : _selectedAnswers[index] == entry.key
-                                        ? 1.8
-                                        : 0.7,
+                      final correctAnswer =
+                          widget.quiz.quiz[index].correctAnswer;
+                      final currentEntry = entry.key;
+                      return ShakeX(
+                        curve: Curves.linear,
+                        duration: const Duration(milliseconds: 100),
+                        from: 3,
+                        animate: userClickedOnCheck &&
+                            correctAnswer == currentEntry &&
+                            userSelectedAnswer != currentEntry,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2.5),
+                          child: GestureDetector(
+                            onTap: !userClickedOnCheck
+                                ? () {
+                                    setState(() {
+                                      _selectedAnswers[index] = entry.key;
+                                      HapticFeedback.selectionClick();
+                                    });
+                                  }
+                                : null,
+                            child: Card(
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(17),
+                                side: BorderSide(
+                                  color: userClickedOnCheck &&
+                                          correctAnswer == currentEntry
+                                      ? Colors.green
+                                      : _getRadioColor(index, entry.key),
+                                  width: (userClickedOnCheck &&
+                                          correctAnswer == currentEntry)
+                                      ? 2.1
+                                      : userSelectedAnswer == entry.key
+                                          ? 1.8
+                                          : 0.7,
+                                ),
                               ),
-                            ),
-                            child: ListTile(
-                              contentPadding:
-                                  const EdgeInsets.only(left: 20, right: 10),
-                              leading: Text(entry.key,
-                                  style: TextStyle(
-                                    color: _isAnswerCorrect[index] != null &&
-                                            widget.quiz.quiz[index]
-                                                    .correctAnswer ==
-                                                entry.key
-                                        ? Colors.green
-                                        : _selectedAnswers[index] ==
-                                                    entry.key &&
-                                                _isAnswerCorrect[index] != null
-                                            ? _getRadioColor(index, entry.key)
-                                            : Colors.black,
-                                    fontSize: 16,
-                                  )),
-                              title: Center(
-                                  child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 11),
-                                child: Text(
-                                  removeDiacritics(entry.value),
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.chathura(
-                                    textStyle: TextStyle(
-                                      color: _isAnswerCorrect[index] != null &&
-                                              widget.quiz.quiz[index]
-                                                      .correctAnswer ==
-                                                  entry.key
+                              child: ListTile(
+                                contentPadding:
+                                    const EdgeInsets.only(left: 20, right: 10),
+                                leading: Text(entry.key,
+                                    style: TextStyle(
+                                      color: userClickedOnCheck &&
+                                              correctAnswer == entry.key
                                           ? Colors.green
-                                          : _selectedAnswers[index] ==
-                                                      entry.key &&
-                                                  _isAnswerCorrect[index] !=
-                                                      null
+                                          : userSelectedAnswer == entry.key &&
+                                                  userClickedOnCheck
                                               ? _getRadioColor(index, entry.key)
                                               : Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      height: 0.7,
-                                      fontSize: 30,
+                                      fontSize: 16,
+                                    )),
+                                title: Center(
+                                    child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 11),
+                                  child: Text(
+                                    removeDiacritics(entry.value),
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.chathura(
+                                      textStyle: TextStyle(
+                                        color: userClickedOnCheck &&
+                                                correctAnswer == entry.key
+                                            ? Colors.green
+                                            : userSelectedAnswer == entry.key &&
+                                                    userClickedOnCheck
+                                                ? _getRadioColor(
+                                                    index, entry.key)
+                                                : Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        height: 0.7,
+                                        fontSize: 30,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )),
-                              minLeadingWidth: 20,
-                              minTileHeight: 54,
-                              trailing: Checkbox(
-                                side: BorderSide(
-                                  color: _isAnswerCorrect[index] != null &&
-                                          widget.quiz.quiz[index]
-                                                  .correctAnswer ==
-                                              entry.key
+                                )),
+                                minLeadingWidth: 20,
+                                minTileHeight: 54,
+                                trailing: Checkbox(
+                                  side: BorderSide(
+                                    color: userClickedOnCheck &&
+                                            correctAnswer == currentEntry
+                                        ? Colors.green
+                                        : Colors.black,
+                                    width: userClickedOnCheck &&
+                                            correctAnswer == currentEntry
+                                        ? 2.3
+                                        : 1.5,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  visualDensity: VisualDensity.compact,
+                                  value: userSelectedAnswer == entry.key,
+                                  onChanged: !userClickedOnCheck
+                                      ? (bool? value) {
+                                          setState(() {
+                                            if (value == true) {
+                                              HapticFeedback.selectionClick();
+                                              _selectedAnswers[index] =
+                                                  entry.key;
+                                            } else {
+                                              _selectedAnswers[index] = null;
+                                            }
+                                          });
+                                        }
+                                      : (bool? value) {},
+                                  activeColor: userClickedOnCheck &&
+                                          correctAnswer == entry.key
                                       ? Colors.green
-                                      : Colors.black,
-                                  width: _isAnswerCorrect[index] != null &&
-                                          widget.quiz.quiz[index]
-                                                  .correctAnswer ==
-                                              entry.key
-                                      ? 2.3
-                                      : 1.5,
+                                      : _getRadioColor(index, entry.key),
+                                  checkColor: Colors.white,
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                visualDensity: VisualDensity.compact,
-                                value: _selectedAnswers[index] == entry.key,
-                                onChanged: _isAnswerCorrect[index] == null
-                                    ? (bool? value) {
-                                        setState(() {
-                                          if (value == true) {
-                                            _selectedAnswers[index] = entry.key;
-                                          } else {
-                                            _selectedAnswers[index] = null;
-                                          }
-                                        });
-                                      }
-                                    : (bool? value) {},
-                                activeColor: _isAnswerCorrect[index] != null &&
-                                        widget.quiz.quiz[index].correctAnswer ==
-                                            entry.key
-                                    ? Colors.green
-                                    : _getRadioColor(index, entry.key),
-                                checkColor: Colors.white,
                               ),
                             ),
                           ),
                         ),
                       );
                     }),
-                    if (_isAnswerCorrect[index] != null)
+                    if (userClickedOnCheck)
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -338,44 +386,75 @@ class _QuizScreenState extends State<QuizScreen> {
                               title: Padding(
                                 padding: const EdgeInsets.only(
                                     top: 16, left: 7, right: 7, bottom: 10),
-                                child: RichText(
-                                  text: TextSpan(
-                                    text: 'Correct answer: ',
-                                    style: GoogleFonts.chathura(
-                                      textStyle: const TextStyle(
-                                        height: 0.7,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight
-                                            .w900, // Bold for "Correct answer:"
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: removeDiacritics(question.options[
-                                                question.correctAnswer] ??
-                                            "Not answered"),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        text:
+                                            '${S.of(context).correctAnswer}: ',
                                         style: GoogleFonts.chathura(
                                           textStyle: const TextStyle(
                                             height: 0.7,
                                             fontSize: 30,
-                                            fontWeight: FontWeight
-                                                .normal, // Regular for the rest
+                                            fontWeight: FontWeight.w900,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: removeDiacritics(question
+                                                    .options[correctAnswer] ??
+                                                "Not answered"),
+                                            style: GoogleFonts.chathura(
+                                              textStyle: const TextStyle(
+                                                height: 0.7,
+                                                fontSize: 30,
+                                                fontWeight: FontWeight
+                                                    .normal, // Regular for the rest
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: ".",
+                                            style: GoogleFonts.chathura(
+                                              textStyle: const TextStyle(
+                                                height: 0.7,
+                                                fontSize: 30,
+                                                fontWeight: FontWeight
+                                                    .normal, // Regular for the rest
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 5),
+                                      child: Text(
+                                        removeDiacritics(question.trivia),
+                                        style: GoogleFonts.chathura(
+                                          textStyle: const TextStyle(
+                                            height: 0.7,
+                                            letterSpacing: -0.6,
+                                            fontSize: 30,
                                             color: Colors.black,
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            height: 30,
-                          )
+                          const SizedBox(height: 10),
                         ],
                       ),
+
                     const SizedBox(height: 10),
                   ],
                 ),
@@ -386,13 +465,13 @@ class _QuizScreenState extends State<QuizScreen> {
             decoration: BoxDecoration(
               color: ThemeSettings.colorPalette.first,
               boxShadow: [
-                ///TODO - Add shoadow on scroll
-                // BoxShadow(
-                //   color: Colors.black.withOpacity(0.5),
-                //   spreadRadius: 0,
-                //   blurRadius: 5,
-                //   offset: const Offset(0, 3), // Ajuste la posición de la sombra
-                // ),
+                if (!_isScrolledToBottom)
+                  BoxShadow(
+                    color: Colors.black.withOpacity(1),
+                    spreadRadius: 0,
+                    blurRadius: 0.1,
+                    offset: const Offset(0, 0),
+                  ),
               ],
             ),
             child: Padding(
@@ -414,18 +493,46 @@ class _QuizScreenState extends State<QuizScreen> {
                           fontSize: 20,
                         ),
                       ),
-                      if (_isAnswerCorrect[index] != null)
+                      if (userClickedOnCheck)
                         Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 5),
                           child: Icon(
-                            _isAnswerCorrect[index]!
-                                ? Icons.check
-                                : Icons.close,
-                            color: _isAnswerCorrect[index]!
-                                ? Colors.green
-                                : Colors.red,
+                            isAnswerCorrect! ? Icons.check : Icons.close,
+                            color: isAnswerCorrect! ? Colors.green : Colors.red,
                           ),
                         ),
+
+                      ///amount of correct answers
+                      Text(
+                        '  -  ',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              _isAnswerCorrect.values
+                                  .where((element) => element == true)
+                                  .length
+                                  .toString(),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                            ),
+                            Icon(
+                              Icons.star,
+                              color: Colors.yellow,
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                   Row(
@@ -438,7 +545,8 @@ class _QuizScreenState extends State<QuizScreen> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
-                            width: 83,
+                            width: buttonWidthOnLocalizations(
+                                currentLanguage.languageCode),
                             height: 52,
                             decoration: BoxDecoration(
                               borderRadius:
@@ -457,6 +565,7 @@ class _QuizScreenState extends State<QuizScreen> {
                               ],
                             ),
                             child: Ink(
+                              padding: EdgeInsets.zero,
                               decoration: const BoxDecoration(
                                 gradient: LinearGradient(
                                   begin: Alignment.topLeft,
@@ -474,16 +583,16 @@ class _QuizScreenState extends State<QuizScreen> {
                                   _validateAnswer(_currentPage);
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  // backgroundColor: Colors.transparent,
+                                  padding: EdgeInsets.zero,
                                   shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         ThemeSettings.buttonsBorderRadius,
                                   ),
                                 ),
-                                child: const Column(
+                                child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Stack(
+                                    const Stack(
                                       children: [
                                         Icon(
                                           Icons.check,
@@ -496,8 +605,8 @@ class _QuizScreenState extends State<QuizScreen> {
                                     Stack(
                                       children: [
                                         Text(
-                                          'Check',
-                                          style: TextStyle(
+                                          S.of(context).check,
+                                          style: const TextStyle(
                                             fontSize: 12,
                                             shadows: [],
                                             color: Colors.white,
@@ -518,7 +627,8 @@ class _QuizScreenState extends State<QuizScreen> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
-                            width: 83,
+                            width: buttonWidthOnLocalizations(
+                                currentLanguage.languageCode),
                             height: 52,
                             decoration: BoxDecoration(
                               color: Colors.blue,
@@ -546,19 +656,20 @@ class _QuizScreenState extends State<QuizScreen> {
                                 );
                               },
                               style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero,
                                 backgroundColor: Colors.blue,
                                 shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       ThemeSettings.buttonsBorderRadius,
                                 ),
                               ),
-                              child: const Padding(
+                              child: Padding(
                                 padding: EdgeInsets.only(top: 9, bottom: 7),
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Stack(
+                                    const Stack(
                                       children: [
                                         Icon(
                                           Icons.arrow_forward,
@@ -571,8 +682,8 @@ class _QuizScreenState extends State<QuizScreen> {
                                     Stack(
                                       children: [
                                         Text(
-                                          'Next',
-                                          style: TextStyle(
+                                          S.of(context).next,
+                                          style: const TextStyle(
                                             fontSize: 12,
                                             shadows: [],
                                             color: Colors.white,
@@ -592,7 +703,8 @@ class _QuizScreenState extends State<QuizScreen> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
-                            width: 83,
+                            width: buttonWidthOnLocalizations(
+                                currentLanguage.languageCode),
                             height: 52,
                             decoration: BoxDecoration(
                               borderRadius:
@@ -614,16 +726,17 @@ class _QuizScreenState extends State<QuizScreen> {
                             child: ElevatedButton(
                               onPressed: _showScore,
                               style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero,
                                 backgroundColor: Colors.blue,
                                 shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       ThemeSettings.buttonsBorderRadius,
                                 ),
                               ),
-                              child: const Column(
+                              child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Stack(
+                                  const Stack(
                                     children: [
                                       Icon(
                                         Icons.check,
@@ -636,7 +749,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                   Stack(
                                     children: [
                                       Text(
-                                        'Finish',
+                                        S.of(context).finish,
                                         style: TextStyle(
                                           fontSize: 12,
                                           shadows: [],
@@ -656,7 +769,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -680,6 +793,12 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(() {
       _isAnswerCorrect[index] = _selectedAnswers[index] == correctAnswer;
     });
+
+    if (_isAnswerCorrect[index] == true) {
+      HapticFeedback.heavyImpact();
+    } else {
+      HapticFeedback.vibrate();
+    }
   }
 
   void _showScore() {
@@ -717,7 +836,7 @@ class _QuizScreenState extends State<QuizScreen> {
                             'Question ${index + 1}:',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Text('${question.question}'),
+                          Text(question.question),
                           RichText(
                             text: TextSpan(
                               text: 'Your answer: ',
@@ -749,7 +868,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           ),
                           RichText(
                             text: TextSpan(
-                              text: 'Correct answer: ',
+                              text: '${S.of(context).correctAnswer}: ',
                               style: const TextStyle(
                                 color: Colors.black,
                               ),
@@ -767,7 +886,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           const SizedBox(height: 10),
                         ],
                       );
-                    }).toList(),
+                    }),
                   ],
                 ),
               ),

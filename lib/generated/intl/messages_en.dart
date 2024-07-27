@@ -25,17 +25,23 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("en"),
+        "amountOfQuestionsLabel":
+            MessageLookupByLibrary.simpleMessage("Amount of questions"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
         "backToInternetConnection":
             MessageLookupByLibrary.simpleMessage("You are back online"),
         "buttonsSectionTitle": MessageLookupByLibrary.simpleMessage("Buttons"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "check": MessageLookupByLibrary.simpleMessage("Check"),
         "chipOneLabel": MessageLookupByLibrary.simpleMessage("Chip One"),
         "chipThreeLabel": MessageLookupByLibrary.simpleMessage("Chip Three"),
         "chipTwoLabel": MessageLookupByLibrary.simpleMessage("Chip Two"),
         "chipsSectionTitle": MessageLookupByLibrary.simpleMessage("Chips"),
         "continueButton": MessageLookupByLibrary.simpleMessage("Continue"),
+        "correctAnswer": MessageLookupByLibrary.simpleMessage("Correct answer"),
         "darkMode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
+        "difficultyLabel": MessageLookupByLibrary.simpleMessage("Difficulty"),
+        "easyDifficulty": MessageLookupByLibrary.simpleMessage("Easy"),
         "elevatedButtonLabel":
             MessageLookupByLibrary.simpleMessage("Elevated Button"),
         "email": MessageLookupByLibrary.simpleMessage("email"),
@@ -43,6 +49,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "emailLabel": MessageLookupByLibrary.simpleMessage("EMAIL"),
         "emptyFields":
             MessageLookupByLibrary.simpleMessage("Some fields are empty"),
+        "errorGeneratingQuizMessage":
+            MessageLookupByLibrary.simpleMessage("Error generating quiz"),
         "errorSigningInWithGoogleSnackbarMessage":
             MessageLookupByLibrary.simpleMessage(
                 "There was an error signing in with Google. Please try again or contact support."),
@@ -85,9 +93,17 @@ class MessageLookup extends MessageLookupByLibrary {
             "There was an error when trying to logout. Please try again."),
         "fillAllFields": MessageLookupByLibrary.simpleMessage(
             "Please fill the following field/s:"),
+        "finish": MessageLookupByLibrary.simpleMessage("Finish"),
+        "generateQuizButton":
+            MessageLookupByLibrary.simpleMessage("Generate Quiz"),
+        "generatingQuizMessage":
+            MessageLookupByLibrary.simpleMessage("Generating quiz..."),
         "gotIt": MessageLookupByLibrary.simpleMessage("Got it"),
+        "hardDifficulty": MessageLookupByLibrary.simpleMessage("Hard"),
         "homeScreenTitle": MessageLookupByLibrary.simpleMessage("Home Screen"),
         "inputsSectionTitle": MessageLookupByLibrary.simpleMessage("Inputs"),
+        "insertTopicHint":
+            MessageLookupByLibrary.simpleMessage("Insert a topic for the quiz"),
         "invalidEmailMessage": MessageLookupByLibrary.simpleMessage(
             "Please insert a valid email."),
         "invalidEmailSnackbarMessage": MessageLookupByLibrary.simpleMessage(
@@ -98,6 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "The password inserted is not valid."),
         "invalidPasswordTooShortMessage": MessageLookupByLibrary.simpleMessage(
             "Password must be at least 6 characters long."),
+        "languageLabel": MessageLookupByLibrary.simpleMessage("Language"),
         "lightMode": MessageLookupByLibrary.simpleMessage("Light Mode"),
         "lightModeDarkMode":
             MessageLookupByLibrary.simpleMessage("Light Mode/Dark Mode"),
@@ -112,6 +129,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginSuccessfulMessage":
             MessageLookupByLibrary.simpleMessage("Login successful!"),
         "logoutButton": MessageLookupByLibrary.simpleMessage("Logout"),
+        "mediumDifficulty": MessageLookupByLibrary.simpleMessage("Medium"),
+        "next": MessageLookupByLibrary.simpleMessage("Next"),
         "no": MessageLookupByLibrary.simpleMessage("No"),
         "noInternetConnection":
             MessageLookupByLibrary.simpleMessage("No Internet Connection"),
@@ -125,6 +144,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "passwordLabel": MessageLookupByLibrary.simpleMessage("PASSWORD"),
         "pleaseFillTheFollowingFields": MessageLookupByLibrary.simpleMessage(
             "Please fill the following fields:"),
+        "questions": MessageLookupByLibrary.simpleMessage("questions"),
+        "selectDifficultyHint":
+            MessageLookupByLibrary.simpleMessage("Select difficulty"),
+        "selectLanguageHint":
+            MessageLookupByLibrary.simpleMessage("Select language"),
+        "selectQuestionCountHint":
+            MessageLookupByLibrary.simpleMessage("Select number of questions"),
         "settingsButton": MessageLookupByLibrary.simpleMessage("Settings"),
         "signInWithGoogleButtonLabel":
             MessageLookupByLibrary.simpleMessage("Sign in with Google"),
@@ -160,11 +186,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "textButtonLabel": MessageLookupByLibrary.simpleMessage("Text Button"),
         "textFieldLabel":
             MessageLookupByLibrary.simpleMessage("Example TextField"),
+        "topicIsEmptyMessage":
+            MessageLookupByLibrary.simpleMessage("Topic is empty"),
         "unableToLoginNoInternet":
             MessageLookupByLibrary.simpleMessage("Unable to Login"),
         "unauthorizedAccess":
             MessageLookupByLibrary.simpleMessage("Unauthorized Access"),
         "unauthorizedAccessMessage": m0,
+        "veryHardDifficulty": MessageLookupByLibrary.simpleMessage("Very Hard"),
         "yes": MessageLookupByLibrary.simpleMessage("Yes"),
         "youAreCurrentlyOfflineMessage": MessageLookupByLibrary.simpleMessage(
             "You are currently offline. Please check your internet connection.")

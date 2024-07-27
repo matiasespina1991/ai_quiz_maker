@@ -2,11 +2,13 @@ class QuizModel {
   final String question;
   final Map<String, String> options;
   final String correctAnswer;
+  final String trivia;
 
   QuizModel({
     required this.question,
     required this.options,
     required this.correctAnswer,
+    required this.trivia,
   });
 
   factory QuizModel.fromJson(Map<String, dynamic> json) {
@@ -14,6 +16,7 @@ class QuizModel {
       question: json['question'],
       options: Map<String, String>.from(json['options']),
       correctAnswer: json['correct_answer'],
+      trivia: json['trivia'],
     );
   }
 
@@ -22,6 +25,7 @@ class QuizModel {
       'question': question,
       'options': options,
       'correct_answer': correctAnswer,
+      'trivia': trivia,
     };
   }
 }

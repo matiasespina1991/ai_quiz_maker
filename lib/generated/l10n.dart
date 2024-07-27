@@ -939,6 +939,206 @@ class S {
       args: [],
     );
   }
+
+  /// `Language`
+  String get languageLabel {
+    return Intl.message(
+      'Language',
+      name: 'languageLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Difficulty`
+  String get difficultyLabel {
+    return Intl.message(
+      'Difficulty',
+      name: 'difficultyLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Amount of questions`
+  String get amountOfQuestionsLabel {
+    return Intl.message(
+      'Amount of questions',
+      name: 'amountOfQuestionsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select language`
+  String get selectLanguageHint {
+    return Intl.message(
+      'Select language',
+      name: 'selectLanguageHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select difficulty`
+  String get selectDifficultyHint {
+    return Intl.message(
+      'Select difficulty',
+      name: 'selectDifficultyHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select number of questions`
+  String get selectQuestionCountHint {
+    return Intl.message(
+      'Select number of questions',
+      name: 'selectQuestionCountHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Insert a topic for the quiz`
+  String get insertTopicHint {
+    return Intl.message(
+      'Insert a topic for the quiz',
+      name: 'insertTopicHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Generating quiz...`
+  String get generatingQuizMessage {
+    return Intl.message(
+      'Generating quiz...',
+      name: 'generatingQuizMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Generate Quiz`
+  String get generateQuizButton {
+    return Intl.message(
+      'Generate Quiz',
+      name: 'generateQuizButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Topic is empty`
+  String get topicIsEmptyMessage {
+    return Intl.message(
+      'Topic is empty',
+      name: 'topicIsEmptyMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error generating quiz`
+  String get errorGeneratingQuizMessage {
+    return Intl.message(
+      'Error generating quiz',
+      name: 'errorGeneratingQuizMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Easy`
+  String get easyDifficulty {
+    return Intl.message(
+      'Easy',
+      name: 'easyDifficulty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Medium`
+  String get mediumDifficulty {
+    return Intl.message(
+      'Medium',
+      name: 'mediumDifficulty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hard`
+  String get hardDifficulty {
+    return Intl.message(
+      'Hard',
+      name: 'hardDifficulty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Very Hard`
+  String get veryHardDifficulty {
+    return Intl.message(
+      'Very Hard',
+      name: 'veryHardDifficulty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `questions`
+  String get questions {
+    return Intl.message(
+      'questions',
+      name: 'questions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Correct answer`
+  String get correctAnswer {
+    return Intl.message(
+      'Correct answer',
+      name: 'correctAnswer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check`
+  String get check {
+    return Intl.message(
+      'Check',
+      name: 'check',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get next {
+    return Intl.message(
+      'Next',
+      name: 'next',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Finish`
+  String get finish {
+    return Intl.message(
+      'Finish',
+      name: 'finish',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
