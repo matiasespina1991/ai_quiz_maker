@@ -9,7 +9,7 @@ import '../../../widgets/LoadingCircle/loading_circle.dart';
 import '../../../widgets/NotificationSnackbar/notification_snackbar.dart';
 import '../../../app_settings/app_general_settings.dart';
 import '../../../widgets/AppScaffold/app_scaffold.dart';
-import '../../../models/quiz_model.dart';
+
 import '../quiz_screen/quiz_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -23,8 +23,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool useAppBar = AppGeneralSettings.useTopAppBar;
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
   bool quizIsBeingGenerated = false;
-  static TextEditingController _topicController = TextEditingController();
-  GeminiQuizResponse? _quiz;
+  static final TextEditingController _topicController = TextEditingController();
   int amountOfRequestsTries = 0;
 
   String _selectedDifficulty = 'hard';
@@ -49,7 +48,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     setState(() {
       quizIsBeingGenerated = true;
-      _quiz = null;
     });
 
     if (_topicController.text.isEmpty) {
@@ -94,12 +92,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         quizIsBeingGenerated = false;
         amountOfRequestsTries = 0;
       });
-      NotificationSnackbar.showSnackBar(
-        icon: Icons.error,
-        variant: 'error',
-        message: S.of(context).errorGeneratingQuizMessage,
-        duration: 'short',
-      );
+
+      if (mounted) {
+        NotificationSnackbar.showSnackBar(
+          icon: Icons.error,
+          variant: 'error',
+          message: S.of(context).errorGeneratingQuizMessage,
+          duration: 'short',
+        );
+      }
     }
   }
 
@@ -143,11 +144,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           }).toList(),
                           decoration: InputDecoration(
                             contentPadding:
-                                EdgeInsets.symmetric(horizontal: 19),
+                                const EdgeInsets.symmetric(horizontal: 19),
                             labelText: S.of(context).languageLabel,
-                            border: OutlineInputBorder(),
+                            border: const OutlineInputBorder(),
                             hintText: S.of(context).selectLanguageHint,
-                            hintStyle: TextStyle(color: Colors.grey),
+                            hintStyle: const TextStyle(color: Colors.grey),
                           ),
                         ),
                       ),
@@ -170,11 +171,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           }).toList(),
                           decoration: InputDecoration(
                             contentPadding:
-                                EdgeInsets.symmetric(horizontal: 19),
+                                const EdgeInsets.symmetric(horizontal: 19),
                             labelText: S.of(context).difficultyLabel,
-                            border: OutlineInputBorder(),
+                            border: const OutlineInputBorder(),
                             hintText: S.of(context).selectDifficultyHint,
-                            hintStyle: TextStyle(color: Colors.grey),
+                            hintStyle: const TextStyle(color: Colors.grey),
                           ),
                         ),
                       ),
@@ -197,9 +198,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     }).toList(),
                     decoration: InputDecoration(
                       labelText: S.of(context).amountOfQuestionsLabel,
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       hintText: S.of(context).selectQuestionCountHint,
-                      hintStyle: TextStyle(color: Colors.grey),
+                      hintStyle: const TextStyle(color: Colors.grey),
                     ),
                   ),
                 ],
@@ -210,20 +211,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   TextField(
                     controller: _topicController,
                     decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: const Icon(
-                          Icons.clear,
-                          size: 21,
-                        ),
-                        onPressed: () {
-                          _topicController.clear();
-                        },
-                      ),
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 19, vertical: 17),
-                      border: OutlineInputBorder(),
+                      suffixIcon: _topicController.text.isNotEmpty
+                          ? IconButton(
+                              icon: Icon(
+                                color: Colors.black.withOpacity(0.6),
+                                Icons.clear,
+                                size: 21,
+                              ),
+                              onPressed: () {
+                                _topicController.clear();
+                              },
+                            )
+                          : null,
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 19, vertical: 17),
+                      border: const OutlineInputBorder(),
                       hintText: S.of(context).insertTopicHint,
-                      hintStyle: TextStyle(color: Colors.grey),
+                      hintStyle: const TextStyle(color: Colors.grey),
                     ),
                   ),
                   const SizedBox(height: 14),
@@ -237,7 +241,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(S.of(context).generatingQuizMessage),
-                              SizedBox(width: 15),
+                              const SizedBox(width: 15),
                               SizedBox(
                                 width: 16,
                                 height: 16,

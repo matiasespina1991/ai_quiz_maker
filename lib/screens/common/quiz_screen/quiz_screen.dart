@@ -19,10 +19,10 @@ class QuizScreen extends ConsumerStatefulWidget {
   const QuizScreen({super.key, required this.quiz});
 
   @override
-  _QuizScreenState createState() => _QuizScreenState();
+  QuizScreenState createState() => QuizScreenState();
 }
 
-class _QuizScreenState extends ConsumerState<QuizScreen> {
+class QuizScreenState extends ConsumerState<QuizScreen> {
   final PageController _pageController = PageController();
   final ScrollController _scrollController = ScrollController();
   bool _isScrolledToBottom = true;
@@ -368,7 +368,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Divider(),
+                          const Divider(),
                           Card(
                             elevation: 2,
                             shape: RoundedRectangleBorder(
@@ -498,14 +498,14 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                           padding: const EdgeInsets.only(left: 5),
                           child: Icon(
                             isAnswerCorrect! ? Icons.check : Icons.close,
-                            color: isAnswerCorrect! ? Colors.green : Colors.red,
+                            color: isAnswerCorrect ? Colors.green : Colors.red,
                           ),
                         ),
 
                       ///amount of correct answers
-                      Text(
+                      const Text(
                         '  -  ',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
                         ),
@@ -526,7 +526,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                 fontSize: 20,
                               ),
                             ),
-                            Icon(
+                            const Icon(
                               Icons.star,
                               color: Colors.yellow,
                             )
@@ -664,7 +664,8 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                 ),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.only(top: 9, bottom: 7),
+                                padding:
+                                    const EdgeInsets.only(top: 9, bottom: 7),
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -750,7 +751,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                     children: [
                                       Text(
                                         S.of(context).finish,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 12,
                                           shadows: [],
                                           color: Colors.white,
@@ -834,7 +835,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                         children: [
                           Text(
                             'Question ${index + 1}:',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Text(question.question),
                           RichText(
