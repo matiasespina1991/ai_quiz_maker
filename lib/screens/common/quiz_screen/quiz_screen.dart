@@ -27,6 +27,7 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final isSmallScreen = screenHeight < 700;
+
     return AppScaffold(
       scrollPhysics: NeverScrollableScrollPhysics(),
       hideFloatingSpeedDialMenu: true,
@@ -62,6 +63,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         alignment: Alignment.center,
                         child: const Icon(
                           Icons.arrow_back_ios,
+                          size: 23,
                         ),
                       ),
                       onPressed: () {
@@ -191,6 +193,8 @@ class _QuizScreenState extends State<QuizScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
+
+                    /// OPTIONS
                     ...question.options.entries.map((entry) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 2.5),
@@ -205,12 +209,20 @@ class _QuizScreenState extends State<QuizScreen> {
                           child: Card(
                             elevation: 2,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(17),
                               side: BorderSide(
-                                color: _getRadioColor(index, entry.key),
-                                width: _selectedAnswers[index] == entry.key
-                                    ? 1.8
-                                    : 0.7,
+                                color: _isAnswerCorrect[index] != null &&
+                                        widget.quiz.quiz[index].correctAnswer ==
+                                            entry.key
+                                    ? Colors.green
+                                    : _getRadioColor(index, entry.key),
+                                width: (_isAnswerCorrect[index] != null &&
+                                        widget.quiz.quiz[index].correctAnswer ==
+                                            entry.key)
+                                    ? 2.1
+                                    : _selectedAnswers[index] == entry.key
+                                        ? 1.8
+                                        : 0.7,
                               ),
                             ),
                             child: ListTile(
@@ -218,8 +230,13 @@ class _QuizScreenState extends State<QuizScreen> {
                                   const EdgeInsets.only(left: 20, right: 10),
                               leading: Text(entry.key,
                                   style: TextStyle(
-                                    color:
-                                        _selectedAnswers[index] == entry.key &&
+                                    color: _isAnswerCorrect[index] != null &&
+                                            widget.quiz.quiz[index]
+                                                    .correctAnswer ==
+                                                entry.key
+                                        ? Colors.green
+                                        : _selectedAnswers[index] ==
+                                                    entry.key &&
                                                 _isAnswerCorrect[index] != null
                                             ? _getRadioColor(index, entry.key)
                                             : Colors.black,
@@ -233,16 +250,45 @@ class _QuizScreenState extends State<QuizScreen> {
                                   removeDiacritics(entry.value),
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.chathura(
-                                    textStyle: const TextStyle(
-                                        height: 0.7,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w900),
+                                    textStyle: TextStyle(
+                                      color: _isAnswerCorrect[index] != null &&
+                                              widget.quiz.quiz[index]
+                                                      .correctAnswer ==
+                                                  entry.key
+                                          ? Colors.green
+                                          : _selectedAnswers[index] ==
+                                                      entry.key &&
+                                                  _isAnswerCorrect[index] !=
+                                                      null
+                                              ? _getRadioColor(index, entry.key)
+                                              : Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      height: 0.7,
+                                      fontSize: 30,
+                                    ),
                                   ),
                                 ),
                               )),
                               minLeadingWidth: 20,
                               minTileHeight: 54,
                               trailing: Checkbox(
+                                side: BorderSide(
+                                  color: _isAnswerCorrect[index] != null &&
+                                          widget.quiz.quiz[index]
+                                                  .correctAnswer ==
+                                              entry.key
+                                      ? Colors.green
+                                      : Colors.black,
+                                  width: _isAnswerCorrect[index] != null &&
+                                          widget.quiz.quiz[index]
+                                                  .correctAnswer ==
+                                              entry.key
+                                      ? 2.3
+                                      : 1.5,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.shrinkWrap,
                                 visualDensity: VisualDensity.compact,
@@ -258,7 +304,11 @@ class _QuizScreenState extends State<QuizScreen> {
                                         });
                                       }
                                     : (bool? value) {},
-                                activeColor: _getRadioColor(index, entry.key),
+                                activeColor: _isAnswerCorrect[index] != null &&
+                                        widget.quiz.quiz[index].correctAnswer ==
+                                            entry.key
+                                    ? Colors.green
+                                    : _getRadioColor(index, entry.key),
                                 checkColor: Colors.white,
                               ),
                             ),
