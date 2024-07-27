@@ -2,13 +2,10 @@ import 'package:ai_quiz_maker_app/app_settings/theme_settings.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../models/quiz_model.dart';
 import '../../../routes/routes.dart';
 import '../../../widgets/AppScaffold/app_scaffold.dart';
-import '../../../widgets/LoadingCircle/loading_circle.dart';
-import '../../../widgets/NotificationSnackbar/notification_snackbar.dart';
 
 class QuizScreen extends StatefulWidget {
   final GeminiQuizResponse quiz;
@@ -81,7 +78,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     padding: const EdgeInsets.all(0),
                     icon: const Center(
                       child: Icon(
-                        Icons.refresh,
+                        Icons.close,
                         size: 30,
                       ),
                     ),
@@ -288,47 +285,43 @@ class _QuizScreenState extends State<QuizScreen> {
                                 Icons.info,
                                 color: Colors.green.withOpacity(1),
                               ),
-                              title: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 12, horizontal: 7),
-                                  child: RichText(
-                                    textAlign: TextAlign.start,
-                                    text: TextSpan(
-                                      text: 'Correct answer: ',
-                                      style: GoogleFonts.chathura(
-                                        textStyle: const TextStyle(
-                                          height: 0.7,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight
-                                              .w900, // Bold for "Correct answer:"
-                                          color: Colors.black,
-                                        ),
+                              title: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 16, left: 7, right: 7, bottom: 10),
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: 'Correct answer: ',
+                                    style: GoogleFonts.chathura(
+                                      textStyle: const TextStyle(
+                                        height: 0.7,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight
+                                            .w900, // Bold for "Correct answer:"
+                                        color: Colors.black,
                                       ),
-                                      children: [
-                                        TextSpan(
-                                          text: removeDiacritics(
-                                              question.options[
-                                                      question.correctAnswer] ??
-                                                  "Not answered"),
-                                          style: GoogleFonts.chathura(
-                                            textStyle: const TextStyle(
-                                              height: 0.7,
-                                              fontSize: 30,
-                                              fontWeight: FontWeight
-                                                  .normal, // Regular for the rest
-                                              color: Colors.black,
-                                            ),
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: removeDiacritics(question.options[
+                                                question.correctAnswer] ??
+                                            "Not answered"),
+                                        style: GoogleFonts.chathura(
+                                          textStyle: const TextStyle(
+                                            height: 0.7,
+                                            fontSize: 30,
+                                            fontWeight: FontWeight
+                                                .normal, // Regular for the rest
+                                            color: Colors.black,
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 30,
                           )
                         ],
@@ -362,16 +355,32 @@ class _QuizScreenState extends State<QuizScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '${index + 1} / ${widget.quiz.quiz.length}',
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        '${index + 1} / ${widget.quiz.quiz.length}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      ),
+                      if (_isAnswerCorrect[index] != null)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Icon(
+                            _isAnswerCorrect[index]!
+                                ? Icons.check
+                                : Icons.close,
+                            color: _isAnswerCorrect[index]!
+                                ? Colors.green
+                                : Colors.red,
+                          ),
+                        ),
+                    ],
                   ),
                   Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       if (_isAnswerCorrect[_currentPage] == null &&
@@ -379,12 +388,12 @@ class _QuizScreenState extends State<QuizScreen> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
-                            width: 90,
-                            height: 50,
+                            width: 83,
+                            height: 52,
                             decoration: BoxDecoration(
                               borderRadius:
                                   ThemeSettings.buttonsBorderRadius.add(
-                                BorderRadius.all(
+                                const BorderRadius.all(
                                   Radius.circular(2),
                                 ),
                               ),
@@ -393,13 +402,12 @@ class _QuizScreenState extends State<QuizScreen> {
                                   color: Colors.black.withOpacity(0.2),
                                   spreadRadius: 0,
                                   blurRadius: 1,
-                                  offset: Offset(
-                                      0, 0), // Ajuste la posición de la sombra
+                                  offset: const Offset(0, 0),
                                 ),
                               ],
                             ),
                             child: Ink(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 gradient: LinearGradient(
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
@@ -417,7 +425,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   // backgroundColor: Colors.transparent,
-                                  shape: RoundedRectangleBorder(
+                                  shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         ThemeSettings.buttonsBorderRadius,
                                   ),
@@ -460,13 +468,13 @@ class _QuizScreenState extends State<QuizScreen> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
-                            width: 90,
-                            height: 50,
+                            width: 83,
+                            height: 52,
                             decoration: BoxDecoration(
                               color: Colors.blue,
                               borderRadius:
                                   ThemeSettings.buttonsBorderRadius.add(
-                                BorderRadius.all(
+                                const BorderRadius.all(
                                   Radius.circular(2),
                                 ),
                               ),
@@ -475,7 +483,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                   color: Colors.black.withOpacity(0.2),
                                   spreadRadius: 0,
                                   blurRadius: 1,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 0), // Ajuste la posición de la sombra
                                 ),
                               ],
@@ -531,17 +539,15 @@ class _QuizScreenState extends State<QuizScreen> {
                         ),
                       if (_isAnswerCorrect[_currentPage] != null &&
                           _currentPage == widget.quiz.quiz.length - 1)
-
-                        /// Create FINISH button
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
-                            width: 90,
-                            height: 50,
+                            width: 83,
+                            height: 52,
                             decoration: BoxDecoration(
                               borderRadius:
                                   ThemeSettings.buttonsBorderRadius.add(
-                                BorderRadius.all(
+                                const BorderRadius.all(
                                   Radius.circular(2),
                                 ),
                               ),
@@ -550,7 +556,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                   color: Colors.black.withOpacity(0.3),
                                   spreadRadius: 0,
                                   blurRadius: 1,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 0), // Ajuste la posición de la sombra
                                 ),
                               ],
@@ -559,7 +565,7 @@ class _QuizScreenState extends State<QuizScreen> {
                               onPressed: _showScore,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue,
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       ThemeSettings.buttonsBorderRadius,
                                 ),
@@ -665,7 +671,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           RichText(
                             text: TextSpan(
                               text: 'Your answer: ',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                               children: [
@@ -694,14 +700,14 @@ class _QuizScreenState extends State<QuizScreen> {
                           RichText(
                             text: TextSpan(
                               text: 'Correct answer: ',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                               children: [
                                 TextSpan(
                                   text:
                                       question.options[question.correctAnswer],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
