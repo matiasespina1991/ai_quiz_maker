@@ -8,7 +8,7 @@ class ThemeSettings {
   static const bool useMaterial3 = true;
   static const bool useSafeArea = true;
   static const EdgeInsetsGeometry scaffoldPadding = EdgeInsets.only(
-    top: 10,
+    top: 0,
     bottom: 0,
     left: 10,
     right: 10,
@@ -63,7 +63,7 @@ class ThemeSettings {
   static const errorColor = Colors.red;
 
   static ColorPalette colorPalette = ColorPalette(
-    first: const Color(0xFFE0E0E0),
+    first: const Color(0xffff8cbc),
     second: const Color(0xFFBDBDBD),
     third: const Color(0xFF9E9E9E),
     fourth: const Color(0xFF757575),

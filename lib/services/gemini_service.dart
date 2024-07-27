@@ -21,10 +21,11 @@ class GeminiService {
 
   String _sanitizeJson(String jsonResponse) {
     return jsonResponse
-        .replaceAll(r'\\\"', r'\"')
+        .replaceAll(r'\\\"', r'\"') // Handle escaped quotes
         .replaceAll(r'\"', '"')
         .replaceAll(r'\\n', '\n')
-        .replaceAll(r'\\t', '\t');
+        .replaceAll(r'\\t', '\t')
+        .replaceAll(r'\\', ''); // Remove all backslashes
   }
 
   Future<GeminiQuizResponse> generateQuiz({
@@ -34,7 +35,7 @@ class GeminiService {
     required int questionCount,
   }) async {
     final prompt = '''
-Generate a JSON object with ${questionCount} multiple-choice questions about the topic "${topic}". The questions should be of "${difficulty}" difficulty and in "${language}". Each question should have four answer options labeled as A, B, C, and D, and include the correct answer. Ensure all text is properly escaped to form a valid JSON. The JSON structure should look like this:
+Generate a JSON object with ${questionCount} multiple-choice questions about the topic "${topic}". The questions should be of "${difficulty}" difficulty and in "${language}". Each question should have four answer options labeled as A, B, C, and D, and include the correct answer. Ensure all text is properly escaped to form a valid JSON. Please don't include double quotes after inside the "quiz" array in the JSON object, only use single quotes for strings. For example, use 'text' instead of "text". The JSON structure should look like this:
 {
   "quiz": [
     {

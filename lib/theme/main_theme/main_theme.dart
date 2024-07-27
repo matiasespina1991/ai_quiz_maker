@@ -103,7 +103,7 @@ class MainTheme {
           ButtonsTheme.outlinedButtonTheme(brightness, colorScheme),
       textButtonTheme: ButtonsTheme.textButtonTheme(brightness, colorScheme),
       dividerTheme: base.dividerTheme.copyWith(
-        space: 70,
+        space: 40,
         color: colorScheme.onSurface.withOpacity(0.2),
         thickness: 1,
         indent: 50,

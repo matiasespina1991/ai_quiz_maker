@@ -29,9 +29,12 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    final isSmallScreen = screenHeight < 700;
     return AppScaffold(
+      scrollPhysics: NeverScrollableScrollPhysics(),
       hideFloatingSpeedDialMenu: true,
       body: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -50,16 +53,15 @@ class _QuizScreenState extends State<QuizScreen> {
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(80),
                             side: BorderSide(
-                              color: Colors.black.withOpacity(1),
-                              width: 1.2,
+                              color: Colors.black.withOpacity(0.25),
+                              width: 1,
                             ),
                           ),
                         ),
                       ),
                       padding: const EdgeInsets.all(0),
                       icon: Container(
-                        padding: const EdgeInsets.only(
-                            left: 10), // Ajustá este valor según necesites
+                        padding: const EdgeInsets.only(left: 10),
                         alignment: Alignment.center,
                         child: const Icon(
                           Icons.arrow_back_ios,
@@ -97,7 +99,7 @@ class _QuizScreenState extends State<QuizScreen> {
               ],
             ),
             SizedBox(
-              height: screenHeight * 0.85,
+              height: isSmallScreen ? screenHeight * 0.85 : screenHeight * 0.80,
               child: PageView.builder(
                 controller: _pageController,
                 itemCount: widget.quiz.quiz.length,
@@ -111,6 +113,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 },
               ),
             ),
+            SizedBox(height: 20),
           ],
         ),
       ),
@@ -121,103 +124,76 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Widget _buildQuizPage(int index, QuizModel question) {
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final isSmallScreen = screenHeight < 700;
+
     return Card(
-      color: const Color(0xffff8cbc),
+      color: ThemeSettings.colorPalette.first,
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 0,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
               child: SingleChildScrollView(
+                physics: ClampingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 23,
+                      height: 30,
                     ),
-                    Stack(
-                      children: [
-                        AutoSizeText(
-                          maxLines: 4,
-                          minFontSize: 12,
-                          question.question,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 17),
+                      child: Stack(
+                        children: [
+                          AutoSizeText(
+                            maxLines: isSmallScreen ? 4 : 8,
+                            minFontSize: 12,
+                            maxFontSize: 33,
+                            question.question,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                height: 1.07,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 37,
+                                foreground: Paint()
+                                  ..style = PaintingStyle.stroke
+                                  ..strokeWidth = 2
+                                  ..color = Colors.black,
+                                fontFamily: 'Wallop'),
+                          ),
+                          AutoSizeText(
+                            maxLines: isSmallScreen ? 4 : 8,
+                            maxFontSize: 33,
+                            minFontSize: 12,
+                            question.question,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
                               height: 1.07,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.bold,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 0.0,
+                                  color: Colors.black,
+                                  offset: Offset(-3.0, 2.0),
+                                ),
+                              ],
                               fontSize: 37,
-                              foreground: Paint()
-                                ..style = PaintingStyle.stroke
-                                ..strokeWidth = 2
-                                ..color = Colors.black,
-                              fontFamily: 'Wallop'),
-                        ),
-                        AutoSizeText(
-                          maxLines: 4,
-                          minFontSize: 12,
-                          question.question,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            height: 1.07,
-                            letterSpacing: 0.0,
-                            fontWeight: FontWeight.bold,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 0.0,
-                                color: Colors.black,
-                                offset: Offset(-3.0, 2.0),
-                              ),
-                            ],
-                            fontSize: 37,
-                            color: Colors.white,
-                            fontFamily: 'Wallop',
+                              color: Colors.white,
+                              fontFamily: 'Wallop',
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    // Stack(
-                    //   children: [
-                    //     AutoSizeText(
-                    //       maxLines: 4,
-                    //       question.question,
-                    //       textAlign: TextAlign.center,
-                    //       style: TextStyle(
-                    //           letterSpacing: 0.0,
-                    //           fontWeight: FontWeight.bold,
-                    //           fontSize: 37,
-                    //           foreground: Paint()
-                    //             ..style = PaintingStyle.stroke
-                    //             ..strokeWidth = 2
-                    //             ..color = Colors.black,
-                    //           fontFamily: 'Wallop'),
-                    //     ),
-                    //     AutoSizeText(
-                    //       maxLines: 4,
-                    //       question.question,
-                    //       textAlign: TextAlign.center,
-                    //       style: const TextStyle(
-                    //         letterSpacing: 0.0,
-                    //         fontWeight: FontWeight.bold,
-                    //         shadows: [
-                    //           Shadow(
-                    //             blurRadius: 0.0,
-                    //             color: Colors.black,
-                    //             offset: Offset(-3.0, 2.0),
-                    //           ),
-                    //         ],
-                    //         fontSize: 37,
-                    //         color: Colors.white,
-                    //         fontFamily: 'Wallop',
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    const SizedBox(height: 23),
+                    const SizedBox(height: 16),
                     ...question.options.entries.map((entry) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 2.5),
@@ -242,11 +218,16 @@ class _QuizScreenState extends State<QuizScreen> {
                             ),
                             child: ListTile(
                               contentPadding:
-                                  const EdgeInsets.only(left: 20, right: 5),
-                              leading: Text(
-                                entry.key,
-                                style: const TextStyle(fontSize: 17),
-                              ),
+                                  const EdgeInsets.only(left: 20, right: 10),
+                              leading: Text(entry.key,
+                                  style: TextStyle(
+                                    color:
+                                        _selectedAnswers[index] == entry.key &&
+                                                _isAnswerCorrect[index] != null
+                                            ? _getRadioColor(index, entry.key)
+                                            : Colors.black,
+                                    fontSize: 16,
+                                  )),
                               title: Center(
                                   child: Padding(
                                 padding:
@@ -257,14 +238,17 @@ class _QuizScreenState extends State<QuizScreen> {
                                   style: GoogleFonts.chathura(
                                     textStyle: const TextStyle(
                                         height: 0.7,
-                                        fontSize: 31,
+                                        fontSize: 30,
                                         fontWeight: FontWeight.w900),
                                   ),
                                 ),
                               )),
-                              minLeadingWidth: 42,
+                              minLeadingWidth: 20,
                               minTileHeight: 54,
                               trailing: Checkbox(
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                visualDensity: VisualDensity.compact,
                                 value: _selectedAnswers[index] == entry.key,
                                 onChanged: _isAnswerCorrect[index] == null
                                     ? (bool? value) {
@@ -285,31 +269,94 @@ class _QuizScreenState extends State<QuizScreen> {
                         ),
                       );
                     }),
-
                     if (_isAnswerCorrect[index] != null)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 10,
-                        ),
-                        child: Text(
-                          'Correct answer: ${question.options[question.correctAnswer]}',
-                          style: const TextStyle(
-                            color: Colors.green,
-                            fontSize: 15,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Divider(),
+                          Card(
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              side: BorderSide(
+                                width: 2,
+                                color: Colors.green.withOpacity(1),
+                              ),
+                            ),
+                            child: ListTile(
+                              trailing: Icon(
+                                Icons.info,
+                                color: Colors.green.withOpacity(1),
+                              ),
+                              title: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 12, horizontal: 7),
+                                  child: RichText(
+                                    textAlign: TextAlign.start,
+                                    text: TextSpan(
+                                      text: 'Correct answer: ',
+                                      style: GoogleFonts.chathura(
+                                        textStyle: const TextStyle(
+                                          height: 0.7,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight
+                                              .w900, // Bold for "Correct answer:"
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: removeDiacritics(
+                                              question.options[
+                                                      question.correctAnswer] ??
+                                                  "Not answered"),
+                                          style: GoogleFonts.chathura(
+                                            textStyle: const TextStyle(
+                                              height: 0.7,
+                                              fontSize: 30,
+                                              fontWeight: FontWeight
+                                                  .normal, // Regular for the rest
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 30,
+                          )
+                        ],
                       ),
                     const SizedBox(height: 10),
                   ],
                 ),
               ),
             ),
-            Padding(
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: ThemeSettings.colorPalette.first,
+              boxShadow: [
+                ///TODO - Add shoadow on scroll
+                // BoxShadow(
+                //   color: Colors.black.withOpacity(0.5),
+                //   spreadRadius: 0,
+                //   blurRadius: 5,
+                //   offset: const Offset(0, 3), // Ajuste la posición de la sombra
+                // ),
+              ],
+            ),
+            child: Padding(
               padding: const EdgeInsets.only(
                 top: 10,
-                left: 10,
-                right: 4,
+                left: 22,
+                right: 15,
                 bottom: 20,
               ),
               child: Row(
@@ -324,66 +371,6 @@ class _QuizScreenState extends State<QuizScreen> {
                   ),
                   Row(
                     children: [
-                      // Align(
-                      //   alignment: Alignment.centerRight,
-                      //   child: Container(
-                      //     width: 90,
-                      //     height: 50,
-                      //     child: ElevatedButton(
-                      //       onPressed: () => {
-                      //         /// go to home page
-                      //         Navigator.of(context).push(MaterialPageRoute(
-                      //             builder: (context) =>
-                      //                 Routes.homeScreen.builder(context)))
-                      //       },
-                      //       style: ElevatedButton.styleFrom(
-                      //         backgroundColor: Colors.orangeAccent,
-                      //       ),
-                      //       child: const Column(
-                      //         mainAxisAlignment: MainAxisAlignment.center,
-                      //         children: [
-                      //           Stack(
-                      //             children: [
-                      //               Icon(
-                      //                 Icons.refresh,
-                      //                 size: 15,
-                      //                 color: Colors.white,
-                      //                 shadows: [
-                      //                   Shadow(
-                      //                     blurRadius: 1.0,
-                      //                     color: Colors.black,
-                      //                     offset: Offset(-0.7, 1.0),
-                      //                   ),
-                      //                 ],
-                      //               ),
-                      //             ],
-                      //           ),
-                      //           Stack(
-                      //
-                      //             children: [
-                      //               Text(
-                      //                 'Restart',
-                      //                 style: TextStyle(
-                      //                   // color: Colors.white,
-                      //                   fontSize: 11,
-                      //                   shadows: [
-                      //                     Shadow(
-                      //                       blurRadius: 1.0,
-                      //                       color: Colors.black,
-                      //                       offset: Offset(-0.7, 1.0),
-                      //                     ),
-                      //                   ],
-                      //                   color: Colors.white,
-                      //                   fontFamily: 'Wallop',
-                      //                 ),
-                      //               ),
-                      //             ],
-                      //           )
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(
                         width: 8,
                       ),
@@ -394,75 +381,105 @@ class _QuizScreenState extends State<QuizScreen> {
                           child: Container(
                             width: 90,
                             height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                _validateAnswer(_currentPage);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  ThemeSettings.buttonsBorderRadius.add(
+                                BorderRadius.all(
+                                  Radius.circular(2),
+                                ),
                               ),
-                              child: const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Stack(
-                                    children: [
-                                      Icon(
-                                        Icons.check,
-                                        size: 15,
-                                        color: Colors.white,
-                                        shadows: [
-                                          Shadow(
-                                            blurRadius: 1.0,
-                                            color: Colors.black,
-                                            offset: Offset(-0.7, 1.0),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  spreadRadius: 0,
+                                  blurRadius: 1,
+                                  offset: Offset(
+                                      0, 0), // Ajuste la posición de la sombra
+                                ),
+                              ],
+                            ),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    ThemeSettings.seedColor,
+                                    ThemeSettings.seedColor,
+                                    Colors.green,
+                                  ],
+                                ),
+                                borderRadius: ThemeSettings.buttonsBorderRadius,
+                              ),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  _validateAnswer(_currentPage);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  // backgroundColor: Colors.transparent,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        ThemeSettings.buttonsBorderRadius,
                                   ),
-                                  Stack(
-                                    children: [
-                                      // Text(
-                                      //   'Check',
-                                      //   style: TextStyle(
-                                      //       // color: Colors.white,
-                                      //       fontSize: 12,
-                                      //       foreground: Paint()
-                                      //         ..style = PaintingStyle.stroke
-                                      //         ..strokeWidth = 0.8
-                                      //         ..color = Colors.black,
-                                      //       fontFamily: 'Wallop'),
-                                      // ),
-                                      Text(
-                                        'Check',
-                                        style: TextStyle(
-                                          // color: Colors.white,
-                                          fontSize: 12,
-                                          shadows: [
-                                            Shadow(
-                                              blurRadius: 1.0,
-                                              color: Colors.black,
-                                              offset: Offset(-0.7, 1.0),
-                                            ),
-                                          ],
+                                ),
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Stack(
+                                      children: [
+                                        Icon(
+                                          Icons.check,
+                                          size: 15,
                                           color: Colors.white,
-                                          fontFamily: 'Wallop',
+                                          shadows: [],
                                         ),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                                      ],
+                                    ),
+                                    Stack(
+                                      children: [
+                                        Text(
+                                          'Check',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            shadows: [],
+                                            color: Colors.white,
+                                            fontFamily: 'Wallop',
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
                       if (_isAnswerCorrect[_currentPage] != null &&
                           _currentPage < widget.quiz.quiz.length - 1)
+                        // create a blue NEXT button with the same style as the CHECK button
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
                             width: 90,
                             height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius:
+                                  ThemeSettings.buttonsBorderRadius.add(
+                                BorderRadius.all(
+                                  Radius.circular(2),
+                                ),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  spreadRadius: 0,
+                                  blurRadius: 1,
+                                  offset: Offset(
+                                      0, 0), // Ajuste la posición de la sombra
+                                ),
+                              ],
+                            ),
                             child: ElevatedButton(
                               onPressed: () {
                                 _pageController.nextPage(
@@ -472,62 +489,80 @@ class _QuizScreenState extends State<QuizScreen> {
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      ThemeSettings.buttonsBorderRadius,
+                                ),
                               ),
-                              child: const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Stack(
-                                    children: [
-                                      Icon(
-                                        Icons.arrow_forward,
-                                        size: 15,
-                                        color: Colors.white,
-                                        shadows: [
-                                          Shadow(
-                                            blurRadius: 1.0,
-                                            color: Colors.black,
-                                            offset: Offset(-0.7, 1.0),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  Stack(
-                                    children: [
-                                      Text(
-                                        'Next',
-                                        style: TextStyle(
-                                          // color: Colors.white,
-                                          fontSize: 12,
-                                          shadows: [
-                                            Shadow(
-                                              blurRadius: 1.0,
-                                              color: Colors.black,
-                                              offset: Offset(-0.7, 1.0),
-                                            ),
-                                          ],
+                              child: const Padding(
+                                padding: EdgeInsets.only(top: 9, bottom: 7),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Stack(
+                                      children: [
+                                        Icon(
+                                          Icons.arrow_forward,
+                                          size: 15,
                                           color: Colors.white,
-                                          fontFamily: 'Wallop',
+                                          shadows: [],
                                         ),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                                      ],
+                                    ),
+                                    Stack(
+                                      children: [
+                                        Text(
+                                          'Next',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            shadows: [],
+                                            color: Colors.white,
+                                            fontFamily: 'Wallop',
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
                       if (_isAnswerCorrect[_currentPage] != null &&
                           _currentPage == widget.quiz.quiz.length - 1)
+
+                        /// Create FINISH button
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
                             width: 90,
                             height: 50,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  ThemeSettings.buttonsBorderRadius.add(
+                                BorderRadius.all(
+                                  Radius.circular(2),
+                                ),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.3),
+                                  spreadRadius: 0,
+                                  blurRadius: 1,
+                                  offset: Offset(
+                                      0, 0), // Ajuste la posición de la sombra
+                                ),
+                              ],
+                            ),
                             child: ElevatedButton(
                               onPressed: _showScore,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      ThemeSettings.buttonsBorderRadius,
+                                ),
                               ),
                               child: const Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -538,13 +573,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                         Icons.check,
                                         size: 15,
                                         color: Colors.white,
-                                        shadows: [
-                                          Shadow(
-                                            blurRadius: 1.0,
-                                            color: Colors.black,
-                                            offset: Offset(-0.7, 1.0),
-                                          ),
-                                        ],
+                                        shadows: [],
                                       ),
                                     ],
                                   ),
@@ -553,15 +582,8 @@ class _QuizScreenState extends State<QuizScreen> {
                                       Text(
                                         'Finish',
                                         style: TextStyle(
-                                          // color: Colors.white,
                                           fontSize: 12,
-                                          shadows: [
-                                            Shadow(
-                                              blurRadius: 1.0,
-                                              color: Colors.black,
-                                              offset: Offset(-0.7, 1.0),
-                                            ),
-                                          ],
+                                          shadows: [],
                                           color: Colors.white,
                                           fontFamily: 'Wallop',
                                         ),
@@ -578,8 +600,8 @@ class _QuizScreenState extends State<QuizScreen> {
                 ],
               ),
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
@@ -590,6 +612,9 @@ class _QuizScreenState extends State<QuizScreen> {
     }
     if (_selectedAnswers[index] == answerKey) {
       return _isAnswerCorrect[index]! ? Colors.green : Colors.red;
+    }
+    if (answerKey == widget.quiz.quiz[index].correctAnswer) {
+      return Colors.green;
     }
     return Colors.black;
   }
