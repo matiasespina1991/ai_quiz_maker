@@ -1,16 +1,18 @@
-import 'package:ai_quiz_maker_app/utils/locale/difficulty_to_locale_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../../generated/l10n.dart';
 import '../../../providers/providers_all.dart';
 import '../../../services/gemini_service.dart';
+import '../../../services/wikipedia_service.dart';
+import '../../../utils/locale/difficulty_to_locale_text.dart';
 import '../../../utils/locale/language_code_to_language_name.dart';
 import '../../../widgets/LoadingCircle/loading_circle.dart';
 import '../../../widgets/NotificationSnackbar/notification_snackbar.dart';
 import '../../../app_settings/app_general_settings.dart';
 import '../../../widgets/AppScaffold/app_scaffold.dart';
-
 import '../quiz_screen/quiz_screen.dart';
+import '../../../models/wikipedia_response_model.dart'; // Importa el nuevo modelo
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -29,6 +31,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   String _selectedDifficulty = 'hard';
   String _selectedLanguage = 'es';
   int _selectedQuestionCount = 5;
+  WikipediaResponseModel? _wikipediaResponse;
+  Map<String, String> wikipediaArticleUrl = {
+    'searchString': '',
+    'url': '',
+  };
 
   @override
   void initState() {
@@ -54,17 +61,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       setState(() {
         quizIsBeingGenerated = false;
       });
-      debugPrint(S.of(context).topicIsEmptyMessage);
+      debugPrint('Topic is empty.');
       return;
     }
 
     final geminiService = GeminiService();
     try {
+      print(wikipediaArticleUrl['url']);
+      print(_topicController.text);
       var quiz = await geminiService.generateQuiz(
         topic: _topicController.text,
         difficulty: _selectedDifficulty,
         languageCode: _selectedLanguage,
         questionCount: _selectedQuestionCount,
+        wikipediaArticleUrl:
+            _topicController.text == wikipediaArticleUrl['searchString']
+                ? wikipediaArticleUrl
+                : null,
       );
 
       setState(() {
@@ -107,6 +120,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
+    final currentLocale = ref.watch(localeProvider).locale;
     return AppScaffold(
       useTopAppBar: false,
       hideFloatingSpeedDialMenu: true,
@@ -116,11 +130,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: SizedBox(
           height: screenHeight - 100,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 19),
+                  alignment: Alignment.bottomCenter,
+                  child: Text(
+                    'AI Quiz Generator',
+                    style: TextStyle(
+                      fontSize: 26,
+                      color: Colors.black.withOpacity(0.70),
+                    ),
+                  ),
+                ),
+              ),
+              Spacer(),
               Column(
                 children: [
-                  const SizedBox(height: 20),
                   Row(
                     children: [
                       Expanded(
@@ -203,32 +229,75 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       hintStyle: const TextStyle(color: Colors.grey),
                     ),
                   ),
-                ],
-              ),
-              Column(
-                children: [
                   const SizedBox(height: 14),
-                  TextField(
+                  TypeAheadField<String>(
+                    autoFlipDirection: true,
+                    autoFlipMinHeight: 110,
                     controller: _topicController,
-                    decoration: InputDecoration(
-                      suffixIcon: _topicController.text.isNotEmpty
-                          ? IconButton(
-                              icon: Icon(
-                                color: Colors.black.withOpacity(0.6),
-                                Icons.clear,
-                                size: 21,
-                              ),
-                              onPressed: () {
-                                _topicController.clear();
-                              },
-                            )
-                          : null,
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 19, vertical: 17),
-                      border: const OutlineInputBorder(),
-                      hintText: S.of(context).insertTopicHint,
-                      hintStyle: const TextStyle(color: Colors.grey),
-                    ),
+                    hideOnEmpty: true,
+                    hideOnLoading: true,
+                    suggestionsCallback: (pattern) async {
+                      _wikipediaResponse = await WikipediaService()
+                          .fetchSuggestions(pattern, currentLocale);
+                      return _wikipediaResponse!.suggestions;
+                    },
+                    itemBuilder: (context, suggestion) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 19, vertical: 9),
+                        child: Text(suggestion,
+                            style: TextStyle(
+                              color: Colors.black.withOpacity(0.50),
+                              fontSize: 14,
+                            )),
+                      );
+                    },
+                    onSelected: (suggestion) {
+                      _topicController.text = suggestion;
+                      final index =
+                          _wikipediaResponse!.suggestions.indexOf(suggestion);
+                      final url =
+                          _wikipediaResponse!.wikipediaArticlesUrls[index];
+
+                      setState(() {
+                        wikipediaArticleUrl = {
+                          'searchString': suggestion,
+                          'url': url,
+                        };
+                      });
+                    },
+                    builder: (context, controller, focusNode) {
+                      return TextField(
+                        controller: controller,
+                        focusNode: focusNode,
+                        decoration: InputDecoration(
+                          suffixIcon: _topicController.text.isNotEmpty
+                              ? IconButton(
+                                  icon: Icon(
+                                    color: Colors.black.withOpacity(0.6),
+                                    Icons.clear,
+                                    size: 21,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      controller.clear();
+                                      _topicController.clear();
+                                      wikipediaArticleUrl = {
+                                        'searchString': '',
+                                        'wikipediaArticlesUrls': '',
+                                      };
+                                    });
+                                  },
+                                )
+                              : null,
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 19, vertical: 17),
+                          border: const OutlineInputBorder(),
+                          hintText: S.of(context).insertTopicHint,
+                          hintStyle: const TextStyle(color: Colors.grey),
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 14),
                   ElevatedButton(
@@ -254,6 +323,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         : Text(S.of(context).generateQuizButton),
                   ),
                 ],
+              ),
+              Spacer(),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 19),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Powered by Wikipedia and Gemini AI',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.black.withOpacity(0.70),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
