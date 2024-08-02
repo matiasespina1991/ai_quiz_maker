@@ -65,15 +65,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       return;
     }
 
+    String? wikipediaArticleContent = '';
+
+    final wikipediaService = WikipediaService();
+    if (wikipediaArticleUrl['url'] != null &&
+        wikipediaArticleUrl['url']!.isNotEmpty) {
+      try {
+        wikipediaArticleContent = await wikipediaService.fetchArticleContent(
+          wikipediaArticleUrl['url']!,
+          _selectedLanguage,
+        );
+      } catch (e) {
+        debugPrint('Error fetching article content: $e');
+      }
+    }
+
     final geminiService = GeminiService();
     try {
-      print(wikipediaArticleUrl['url']);
-      print(_topicController.text);
       var quiz = await geminiService.generateQuiz(
         topic: _topicController.text,
         difficulty: _selectedDifficulty,
         languageCode: _selectedLanguage,
         questionCount: _selectedQuestionCount,
+        wikipediaArticleContent: wikipediaArticleContent,
         wikipediaArticleUrl:
             _topicController.text == wikipediaArticleUrl['searchString']
                 ? wikipediaArticleUrl

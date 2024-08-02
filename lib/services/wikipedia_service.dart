@@ -31,4 +31,23 @@ class WikipediaService {
       throw Exception('Failed to fetch suggestions');
     }
   }
+
+  Future<String> fetchArticleContent(
+      String articleUrl, String languageCode) async {
+    final articleTitle = articleUrl.split('/').last;
+    final apiUrl =
+        'https://${languageCode}.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exlimit=max&explaintext&titles=$articleTitle';
+
+    final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final pages = data['query']['pages'];
+      final page = pages.values.first;
+      return page['extract'] as String;
+    } else {
+      print('Failed to fetch article content: ${response.body}');
+      throw Exception('Failed to fetch article content');
+    }
+  }
 }

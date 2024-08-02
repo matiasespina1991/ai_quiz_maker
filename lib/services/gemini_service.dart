@@ -30,6 +30,7 @@ class GeminiService {
   }
 
   Future<GeminiQuizResponse> generateQuiz({
+    required String? wikipediaArticleContent,
     required String topic,
     required String difficulty,
     required String languageCode,
@@ -37,7 +38,7 @@ class GeminiService {
     Map<String, dynamic>? wikipediaArticleUrl,
   }) async {
     final prompt = '''
-Generate a JSON object with $questionCount multiple-choice questions about the topic "$topic". ${wikipediaArticleUrl != null ? 'Please help yourself with the following to build the questions and answers using the following wikipedia article: ${wikipediaArticleUrl['url']}, but dont hesitate to use your knowledge aswell' : ''} The questions should be of "$difficulty" difficulty and in "${languageCodeToLanguageName(languageCode)}". Each question should have four answer options labeled as A, B, C, and D, and include the correct answer and a short trivia about the correct answer. The trivia should provide an interesting fact or explanation that is not obvious. For example, explain why Paris is called the 'City of Light', give an interesting size comparison for Jupiter, or mention an award the author won. Ensure all text is properly escaped to form a valid JSON. Please don't include double quotes after inside the "quiz" array in the JSON object, except for "question", "trivia", "options" an "correct_answer" that should have double quotes, only use single quotes for strings. For example, use 'text' instead of "text". The JSON structure should look like this:
+Generate a JSON object with $questionCount multiple-choice questions about the topic "$topic". The questions should be of "$difficulty" difficulty and in "${languageCodeToLanguageName(languageCode)}". Each question should have four answer options labeled as A, B, C, and D, and include the correct answer and a short trivia about the correct answer. The trivia should provide an interesting fact or explanation that is not obvious. For example, explain why Paris is called the 'City of Light', give an interesting size comparison for Jupiter, or mention an award the author won. Ensure all text is properly escaped to form a valid JSON. Please don't include double quotes after inside the "quiz" array in the JSON object, except for "quiz", "question", "trivia", "options" an "correct_answer" that should have double quotes, only use single quotes for strings. For example, use 'text' instead of "text". ${wikipediaArticleContent != null ? 'Please help yourself with the following to build the questions and answers using the following content extracted from wikipedia about this topic: <<$wikipediaArticleContent>> [END OF WIKIPEDIA ARTICLE CONTENT]. Dont hesitate to use your knowledge aswell' : ''} The JSON structure should look like this:
 {
   "quiz": [
     {
