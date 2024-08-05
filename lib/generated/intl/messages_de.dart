@@ -21,7 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'de';
 
   static String m0(screenName) =>
-      "Du musst dich anmelden, um auf ${screenName} zuzugreifen.";
+      "Sie müssen sich anmelden, um auf ${screenName} zuzugreifen.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -31,18 +31,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "back": MessageLookupByLibrary.simpleMessage("Zurück"),
         "backToInternetConnection":
             MessageLookupByLibrary.simpleMessage("Sie sind wieder online"),
-        "buttonsSectionTitle": MessageLookupByLibrary.simpleMessage("Tasten"),
+        "buttonsSectionTitle": MessageLookupByLibrary.simpleMessage("Buttons"),
         "cancel": MessageLookupByLibrary.simpleMessage("Abbrechen"),
+        "check": MessageLookupByLibrary.simpleMessage("Überprüfen"),
         "chipOneLabel": MessageLookupByLibrary.simpleMessage("Chip Eins"),
         "chipThreeLabel": MessageLookupByLibrary.simpleMessage("Chip Drei"),
         "chipTwoLabel": MessageLookupByLibrary.simpleMessage("Chip Zwei"),
         "chipsSectionTitle": MessageLookupByLibrary.simpleMessage("Chips"),
-        "continueButton": MessageLookupByLibrary.simpleMessage("Weiter"),
+        "continueButton": MessageLookupByLibrary.simpleMessage("Fortfahren"),
+        "correctAnswer":
+            MessageLookupByLibrary.simpleMessage("Richtige Antwort"),
         "darkMode": MessageLookupByLibrary.simpleMessage("Dunkelmodus"),
         "difficultyLabel":
             MessageLookupByLibrary.simpleMessage("Schwierigkeitsgrad"),
+        "easyDifficulty": MessageLookupByLibrary.simpleMessage("Einfach"),
         "elevatedButtonLabel":
-            MessageLookupByLibrary.simpleMessage("Erhöhte Taste"),
+            MessageLookupByLibrary.simpleMessage("Erhöhter Button"),
         "email": MessageLookupByLibrary.simpleMessage("E-Mail"),
         "emailHintText": MessageLookupByLibrary.simpleMessage("E-Mail"),
         "emailLabel": MessageLookupByLibrary.simpleMessage("E-MAIL"),
@@ -52,58 +56,60 @@ class MessageLookup extends MessageLookupByLibrary {
             "Fehler beim Erstellen des Quiz"),
         "errorSigningInWithGoogleSnackbarMessage":
             MessageLookupByLibrary.simpleMessage(
-                "Es gab einen Fehler bei der Anmeldung mit Google. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support."),
+                "Fehler bei der Anmeldung mit Google. Bitte versuchen Sie es erneut oder wenden Sie sich an den Support."),
         "exampleBodyLargePrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Body "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Text "),
         "exampleBodyMediumPrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Body "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Text "),
         "exampleBodySmallPrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Body "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Text "),
         "exampleDescription": MessageLookupByLibrary.simpleMessage(
-            "Dies ist eine kreative Beispielbeschreibung für den Startbildschirm. Fühlen Sie sich frei, es zu ändern."),
+            "Dies ist ein kreatives Lorem Ipsum Beispiel für den Startbildschirm. Sie können es gerne ändern."),
         "exampleDisplayLargePrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Display "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Anzeige "),
         "exampleDisplayMediumPrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Display "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Anzeige "),
         "exampleDisplaySmallPrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Display "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Anzeige "),
         "exampleHeadlineLargePrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Headline "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Schlagzeile "),
         "exampleHeadlineMediumPrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Headline "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Schlagzeile "),
         "exampleHeadlineSmallPrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Headline "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Schlagzeile "),
         "exampleLabelLargePrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Label "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Etikett "),
         "exampleLabelMediumPrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Label "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Etikett "),
         "exampleLabelSmallPrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Label "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Etikett "),
         "exampleSwitch":
             MessageLookupByLibrary.simpleMessage("Beispielschalter"),
         "exampleTitle": MessageLookupByLibrary.simpleMessage("Beispieltitel"),
         "exampleTitleLargePrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Title "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Titel "),
         "exampleTitleMediumPrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Title "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Titel "),
         "exampleTitleSmallPrefix":
-            MessageLookupByLibrary.simpleMessage("Beispiel für Title "),
+            MessageLookupByLibrary.simpleMessage("Beispiel für Titel "),
         "failedLogout":
             MessageLookupByLibrary.simpleMessage("Abmeldung fehlgeschlagen"),
         "failedLogoutMessage": MessageLookupByLibrary.simpleMessage(
-            "Beim Abmelden ist ein Fehler aufgetreten. Bitte versuche es erneut."),
+            "Fehler bei der Abmeldung. Bitte versuchen Sie es erneut."),
         "fillAllFields": MessageLookupByLibrary.simpleMessage(
             "Bitte füllen Sie die folgenden Felder aus:"),
+        "finish": MessageLookupByLibrary.simpleMessage("Fertigstellen"),
         "generateQuizButton":
             MessageLookupByLibrary.simpleMessage("Quiz erstellen"),
         "generatingQuizMessage":
             MessageLookupByLibrary.simpleMessage("Quiz wird erstellt..."),
         "gotIt": MessageLookupByLibrary.simpleMessage("Verstanden"),
+        "hardDifficulty": MessageLookupByLibrary.simpleMessage("Schwer"),
         "homeScreenTitle":
             MessageLookupByLibrary.simpleMessage("Startbildschirm"),
         "inputsSectionTitle": MessageLookupByLibrary.simpleMessage("Eingaben"),
-        "insertTopicHint": MessageLookupByLibrary.simpleMessage(
-            "Geben Sie ein Thema für das Quiz ein"),
+        "insertTopicHint":
+            MessageLookupByLibrary.simpleMessage("Thema für das Quiz eingeben"),
         "invalidEmailMessage": MessageLookupByLibrary.simpleMessage(
             "Bitte geben Sie eine gültige E-Mail-Adresse ein."),
         "invalidEmailSnackbarMessage": MessageLookupByLibrary.simpleMessage(
@@ -115,33 +121,37 @@ class MessageLookup extends MessageLookupByLibrary {
         "invalidPasswordTooShortMessage": MessageLookupByLibrary.simpleMessage(
             "Das Passwort muss mindestens 6 Zeichen lang sein."),
         "languageLabel": MessageLookupByLibrary.simpleMessage("Sprache"),
-        "lightMode": MessageLookupByLibrary.simpleMessage("Hellmodus"),
+        "lightMode": MessageLookupByLibrary.simpleMessage("Lichtmodus"),
         "lightModeDarkMode":
-            MessageLookupByLibrary.simpleMessage("Hell-/Dunkelmodus"),
+            MessageLookupByLibrary.simpleMessage("Lichtmodus/Dunkelmodus"),
         "loginButton": MessageLookupByLibrary.simpleMessage("Anmelden"),
         "loginErrorMessage": MessageLookupByLibrary.simpleMessage(
-            "Fehler bei der Anmeldung. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support."),
+            "Fehler bei der Anmeldung. Bitte versuchen Sie es erneut oder wenden Sie sich an den Support."),
         "loginFailed":
             MessageLookupByLibrary.simpleMessage("Anmeldung fehlgeschlagen"),
         "loginFailedMessage": MessageLookupByLibrary.simpleMessage(
-            "Beim Anmelden ist ein Fehler aufgetreten. Bitte versuche es erneut."),
-        "loginScreenTitle": MessageLookupByLibrary.simpleMessage("Anmelden"),
+            "Fehler bei der Anmeldung. Bitte versuchen Sie es erneut."),
+        "loginScreenTitle":
+            MessageLookupByLibrary.simpleMessage("Anmeldebildschirm"),
         "loginSuccessfulMessage":
-            MessageLookupByLibrary.simpleMessage("Erfolgreich angemeldet!"),
+            MessageLookupByLibrary.simpleMessage("Anmeldung erfolgreich!"),
         "logoutButton": MessageLookupByLibrary.simpleMessage("Abmelden"),
+        "mediumDifficulty": MessageLookupByLibrary.simpleMessage("Mittel"),
+        "next": MessageLookupByLibrary.simpleMessage("Weiter"),
         "no": MessageLookupByLibrary.simpleMessage("Nein"),
         "noInternetConnection":
             MessageLookupByLibrary.simpleMessage("Keine Internetverbindung"),
         "noInternetMessageOnLoginAttempt": MessageLookupByLibrary.simpleMessage(
-            "Du hast versucht, dich anzumelden, aber du hast keine Internetverbindung. Bitte verbinde dich mit dem Internet und versuche es erneut."),
+            "Sie haben versucht, sich anzumelden, aber Sie haben keine Internetverbindung. Bitte stellen Sie eine Verbindung zum Internet her und versuchen Sie es erneut."),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "outlinedButtonLabel":
-            MessageLookupByLibrary.simpleMessage("Umrissene Taste"),
+            MessageLookupByLibrary.simpleMessage("Umrissener Button"),
         "password": MessageLookupByLibrary.simpleMessage("Passwort"),
         "passwordHintText": MessageLookupByLibrary.simpleMessage("Passwort"),
         "passwordLabel": MessageLookupByLibrary.simpleMessage("PASSWORT"),
         "pleaseFillTheFollowingFields": MessageLookupByLibrary.simpleMessage(
             "Bitte füllen Sie die folgenden Felder aus:"),
+        "questions": MessageLookupByLibrary.simpleMessage("Fragen"),
         "selectDifficultyHint": MessageLookupByLibrary.simpleMessage(
             "Schwierigkeitsgrad auswählen"),
         "selectLanguageHint":
@@ -151,46 +161,47 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingsButton": MessageLookupByLibrary.simpleMessage("Einstellungen"),
         "signInWithGoogleButtonLabel":
             MessageLookupByLibrary.simpleMessage("Mit Google anmelden"),
-        "signingInMessage":
-            MessageLookupByLibrary.simpleMessage("Anmeldung..."),
+        "signingInMessage": MessageLookupByLibrary.simpleMessage("Anmelden..."),
         "signingInWithGoogleSnackbarMessage":
-            MessageLookupByLibrary.simpleMessage("Anmeldung mit Google..."),
+            MessageLookupByLibrary.simpleMessage("Mit Google anmelden..."),
         "sliderValueLabel":
             MessageLookupByLibrary.simpleMessage("Schiebereglerwert"),
         "slidersSectionTitle":
             MessageLookupByLibrary.simpleMessage("Schieberegler"),
         "stepOneContent": MessageLookupByLibrary.simpleMessage(
-            "Dies ist der Inhalt für Schritt eins."),
+            "Dies ist der Inhalt für Schritt Eins."),
         "stepOneTitle": MessageLookupByLibrary.simpleMessage("Schritt Eins"),
         "stepThreeContent": MessageLookupByLibrary.simpleMessage(
-            "Dies ist der Inhalt für Schritt drei."),
+            "Dies ist der Inhalt für Schritt Drei."),
         "stepThreeTitle": MessageLookupByLibrary.simpleMessage("Schritt Drei"),
         "stepTwoContent": MessageLookupByLibrary.simpleMessage(
-            "Dies ist der Inhalt für Schritt zwei."),
+            "Dies ist der Inhalt für Schritt Zwei."),
         "stepTwoTitle": MessageLookupByLibrary.simpleMessage("Schritt Zwei"),
         "steppersSectionTitle":
-            MessageLookupByLibrary.simpleMessage("Schrittweiser"),
+            MessageLookupByLibrary.simpleMessage("Schrittzähler"),
         "successfulLogin":
             MessageLookupByLibrary.simpleMessage("Erfolgreiche Anmeldung"),
         "successfulLoginRedirectToHomeMessage":
             MessageLookupByLibrary.simpleMessage(
-                "Du wirst zum Hauptbildschirm weitergeleitet."),
+                "Sie werden zum Hauptbildschirm weitergeleitet."),
         "switchToDarkMode":
-            MessageLookupByLibrary.simpleMessage("Zu Dunkelmodus wechseln"),
+            MessageLookupByLibrary.simpleMessage("Zum Dunkelmodus wechseln"),
         "switchToLightMode":
-            MessageLookupByLibrary.simpleMessage("Zu Hellmodus wechseln"),
+            MessageLookupByLibrary.simpleMessage("Zum Lichtmodus wechseln"),
         "switchesSectionTitle":
             MessageLookupByLibrary.simpleMessage("Schalter"),
-        "textButtonLabel": MessageLookupByLibrary.simpleMessage("Text Taste"),
+        "textButtonLabel": MessageLookupByLibrary.simpleMessage("Text Button"),
         "textFieldLabel":
             MessageLookupByLibrary.simpleMessage("Beispiel Textfeld"),
         "topicIsEmptyMessage":
-            MessageLookupByLibrary.simpleMessage("Das Thema ist leer"),
+            MessageLookupByLibrary.simpleMessage("Thema ist leer"),
         "unableToLoginNoInternet":
             MessageLookupByLibrary.simpleMessage("Anmeldung nicht möglich"),
         "unauthorizedAccess":
             MessageLookupByLibrary.simpleMessage("Unbefugter Zugriff"),
         "unauthorizedAccessMessage": m0,
+        "veryHardDifficulty":
+            MessageLookupByLibrary.simpleMessage("Sehr Schwer"),
         "yes": MessageLookupByLibrary.simpleMessage("Ja"),
         "youAreCurrentlyOfflineMessage": MessageLookupByLibrary.simpleMessage(
             "Sie sind derzeit offline. Bitte überprüfen Sie Ihre Internetverbindung.")

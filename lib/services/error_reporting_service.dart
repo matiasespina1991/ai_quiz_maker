@@ -31,7 +31,7 @@ class ErrorReportingService {
       'deviceData': deviceData,
       'appInfo': appInfo,
       'stackTrace': stackTrace.toString(),
-      additionalInfo: additionalInfo,
+      'additionalInfo': additionalInfo,
     };
 
     debugPrint("Error Report: $errorReport");

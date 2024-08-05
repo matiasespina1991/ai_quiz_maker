@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:ai_quiz_maker_app/utils/locale/language_code_to_language_name.dart';
 import 'package:firebase_vertexai/firebase_vertexai.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,7 +39,7 @@ class GeminiService {
     Map<String, dynamic>? wikipediaArticleUrl,
   }) async {
     final prompt = '''
-Generate a JSON object with $questionCount multiple-choice questions about the topic "$topic". The questions should be of "$difficulty" difficulty and in "${languageCodeToLanguageName(languageCode)}". Each question should have four answer options labeled as A, B, C, and D, and include the correct answer and a short trivia about the correct answer. The trivia should provide an interesting fact or explanation that is not obvious. For example, explain why Paris is called the 'City of Light', give an interesting size comparison for Jupiter, or mention an award the author won. Ensure all text is properly escaped to form a valid JSON. Please don't include double quotes after inside the values of the array in the JSON object, but mantain the double quotes for the keys, that would be: "quiz", "question", "trivia", "options" and "correct_answer" that should have double quotes. Then for the values inside these keys it should be for example 'text' instead of "text". ${wikipediaArticleContent != null ? 'Please help yourself with the following to build the questions and answers using the following content extracted from wikipedia about this topic: <<$wikipediaArticleContent>> [END OF WIKIPEDIA ARTICLE CONTENT]. Dont hesitate to use your knowledge aswell' : ''} The JSON structure should look like this:
+Generate a JSON object with $questionCount multiple-choice questions about the topic "$topic". The questions should be of "$difficulty" difficulty and in ${languageCodeToLanguageName(languageCode)} language. Each question should have four answer options labeled as A, B, C, and D, and include the correct answer and a short trivia about the correct answer. The trivia should provide an interesting fact or explanation that is not obvious. For example, explain why Paris is called the 'City of Light', give an interesting size comparison for Jupiter, or mention an award the author won. Ensure all text is properly escaped to form a valid JSON. Please don't include double quotes after inside the values of the array in the JSON object, but mantain the double quotes for the keys, that would be: "quiz", "question", "trivia", "options" and "correct_answer" that should have double quotes. Then for the values inside these keys it should be for example 'text' instead of "text". ${wikipediaArticleContent != null ? 'Please help yourself with the following to build the questions and answers using the following content extracted from wikipedia about this topic: <<$wikipediaArticleContent>> [END OF WIKIPEDIA ARTICLE CONTENT]. Dont hesitate to use your knowledge aswell' : ''} The JSON structure should look like this:
 {
   "quiz": [
     {
@@ -57,7 +58,7 @@ Generate a JSON object with $questionCount multiple-choice questions about the t
 }
 ''';
 
-    print('Prompt: $prompt');
+    log('Prompt: $prompt');
     try {
       final response = await model.generateContent([Content.text(prompt)]);
 

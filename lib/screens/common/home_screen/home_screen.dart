@@ -1,5 +1,7 @@
+import 'package:ai_quiz_maker_app/app_settings/language_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../../generated/l10n.dart';
 import '../../../providers/providers_all.dart';
@@ -25,8 +27,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool useAppBar = AppGeneralSettings.useTopAppBar;
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
   bool quizIsBeingGenerated = false;
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
   static final TextEditingController _topicController = TextEditingController();
   int amountOfRequestsTries = 0;
+  bool languageLoaded = false;
 
   String _selectedDifficulty = 'hard';
   String _selectedLanguage = 'es';
@@ -40,6 +44,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    loadLocale();
+  }
+
+  void loadLocale() async {
+    ///TODO: This is buggy, it should be fixed from the provider
+    _selectedLanguage = await _storage.read(key: 'user_defined_locale') ??
+        LanguageSettings.appDefaultLanguage;
+    setState(() {
+      languageLoaded = true;
+    });
   }
 
   @override
@@ -134,7 +148,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
-    final currentLocale = ref.watch(localeProvider).locale;
+
     return AppScaffold(
       useTopAppBar: false,
       hideFloatingSpeedDialMenu: true,
@@ -175,7 +189,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               _selectedLanguage = newValue;
                             });
                           },
-                          items: <String>['en', 'es']
+                          items: <String>['en', 'es', 'de']
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -252,7 +266,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     hideOnLoading: true,
                     suggestionsCallback: (pattern) async {
                       _wikipediaResponse = await WikipediaService()
-                          .fetchSuggestions(pattern, currentLocale);
+                          .fetchSuggestions(pattern, Locale(_selectedLanguage));
                       return _wikipediaResponse!.suggestions;
                     },
                     itemBuilder: (context, suggestion) {

@@ -4,6 +4,8 @@ String languageCodeToLanguageName(String languageCode) {
       return 'English 🇬🇧';
     case 'es':
       return 'Español 🇪🇸';
+    case 'de':
+      return 'Deutsch 🇩🇪';
     default:
       return 'English 🇬🇧';
   }
